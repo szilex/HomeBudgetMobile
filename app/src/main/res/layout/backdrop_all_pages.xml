@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_new_budget"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_budget" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_current_budget"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/current_budget" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_archive_budgets"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/archive_budgets" />
+
+    <View
+        android:layout_width="56dp"
+        android:layout_height="1dp"
+        android:layout_margin="16dp"
+        android:background="?android:attr/textColorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_new_regular_expense"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_regular_expense" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_current_regular_expenses"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current regular expenses" />
+
+    <View
+        android:layout_width="56dp"
+        android:layout_height="1dp"
+        android:layout_margin="16dp"
+        android:background="?android:attr/textColorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_new_strategy"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_saving_strategy" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_current_strategies"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/current_saving_strategies" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_archive_strategies"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/archive_saving_strategies" />
+
+    <View
+        android:layout_width="56dp"
+        android:layout_height="1dp"
+        android:layout_margin="16dp"
+        android:background="?android:attr/textColorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_my_account"
+        style="@style/Widget.HomeBudgetMobile.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_account" />
+</merge>
