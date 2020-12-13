@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment
+package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.user
 
 import android.os.Bundle
 import android.os.Handler
@@ -17,11 +17,12 @@ import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.textfield.TextInputLayout
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.TextInputValidator
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import org.json.JSONObject
 
@@ -30,11 +31,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var sessionManager: SessionManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         sessionManager = SessionManager(activity)
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
@@ -54,7 +51,7 @@ class LoginFragment : Fragment() {
 
                 val jsonObjectRequest = object: JsonObjectRequest(
                     Method.GET,
-                    "http://192.168.0.10:8080/user",
+                    "http://10.0.2.2:8080/user",
                     null,
                     { response: JSONObject? ->
                         run {
@@ -135,6 +132,9 @@ class LoginFragment : Fragment() {
         }
 
         handler.postDelayed(runnable, 3000)
+
+        sessionManager.createSession("guest123", "pass123")
+        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
 
         return view
     }

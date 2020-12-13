@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.listener.ShowRegularExpenseChartOnClickListener
+import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.RegularExpenseEntry
 import java.util.*
 
 class RegularExpenseCardRecyclerViewAdapter(private val regularExpenseList: List<RegularExpenseEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<RegularExpenseCardViewHolder>() {

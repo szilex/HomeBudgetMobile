@@ -1,9 +1,17 @@
 package edu.michaelszeler.homebudget.HomeBudgetMobile.navigation
 
 import android.view.View
-import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.*
 import com.google.android.material.button.MaterialButton
+import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.budget.ArchiveBudgetsFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.budget.CurrentBudgetFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.budget.NewBudgetFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.expense.CurrentRegularExpensesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.expense.NewRegularExpenseFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.strategy.ArchiveStrategiesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.strategy.CurrentStrategiesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.strategy.NewStrategyFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.user.MyAccountFragment
 
 class FragmentNavigationUtility {
     companion object {

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.listener.ShowStrategyChartOnClickListener
+import edu.michaelszeler.homebudget.HomeBudgetMobile.model.strategy.StrategyEntry
 import java.util.*
 
 class StrategyCardRecyclerViewAdapter(private val strategyList: List<StrategyEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<StrategyCardViewHolder>() {

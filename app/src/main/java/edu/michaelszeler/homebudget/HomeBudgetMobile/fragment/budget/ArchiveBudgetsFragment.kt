@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment
+package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.budget
 
 import android.os.Bundle
 import android.view.*
@@ -6,16 +6,12 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationIconClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import edu.michaelszeler.homebudget.HomeBudgetMobile.adapter.strategy.StrategyCardRecyclerViewAdapter
-import edu.michaelszeler.homebudget.HomeBudgetMobile.adapter.strategy.StrategyEntry
-import edu.michaelszeler.homebudget.HomeBudgetMobile.adapter.strategy.StrategyGridItemDecoration
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.MainMenuFragment
 import kotlinx.android.synthetic.main.fragment_archive_budgets.view.*
 
 class ArchiveBudgetsFragment : Fragment() {
@@ -42,7 +38,7 @@ class ArchiveBudgetsFragment : Fragment() {
             ContextCompat.getDrawable(context!!, R.drawable.menu_icon))
         )
 
-        view.recycler_view_archive_budgets.setHasFixedSize(true)
+        /*view.recycler_view_archive_budgets.setHasFixedSize(true)
         val gridLayoutManager = GridLayoutManager(context, 2, RecyclerView.HORIZONTAL, false)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -56,7 +52,7 @@ class ArchiveBudgetsFragment : Fragment() {
 
         val largePadding = resources.getDimensionPixelSize(R.dimen.strategy_grid_spacing)
         val smallPadding = resources.getDimensionPixelSize(R.dimen.strategy_grid_spacing_small)
-        view.recycler_view_archive_budgets.addItemDecoration(StrategyGridItemDecoration(largePadding, smallPadding))
+        view.recycler_view_archive_budgets.addItemDecoration(StrategyGridItemDecoration(largePadding, smallPadding))*/
 
         FragmentNavigationUtility.setUpMenuButtons((activity as NavigationHost), view)
 

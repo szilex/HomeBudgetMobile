@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment
+package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.budget
 
 import android.os.Bundle
 import android.view.*
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationIconClickListener

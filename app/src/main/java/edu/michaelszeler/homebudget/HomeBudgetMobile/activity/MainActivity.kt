@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.LoginFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.user.LoginFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 
 class MainActivity : AppCompatActivity(), NavigationHost {

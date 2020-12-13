@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment
+package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.user
 
 import android.os.Bundle
 import android.view.*
@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationIconClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import kotlinx.android.synthetic.main.fragment_current_budget.view.*
+import kotlinx.android.synthetic.main.fragment_my_account.view.*
 
-class CurrentBudgetFragment : Fragment() {
+class MyAccountFragment : Fragment() {
 
     private lateinit var sessionManager : SessionManager
 
@@ -29,13 +30,13 @@ class CurrentBudgetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_current_budget, container, false)
-        (activity as AppCompatActivity).setSupportActionBar(view.toolbar_current_budget)
+        val view = inflater.inflate(R.layout.fragment_my_account, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(view.toolbar_my_account)
 
-        view.toolbar_current_budget.setNavigationOnClickListener(
+        view.toolbar_my_account.setNavigationOnClickListener(
             NavigationIconClickListener(
                 activity!!,
-                view.nested_scroll_view_current_budget,
+                view.nested_scroll_view_my_account,
                 AccelerateDecelerateInterpolator(),
                 ContextCompat.getDrawable(context!!, R.drawable.menu_icon),
                 ContextCompat.getDrawable(context!!, R.drawable.menu_icon))

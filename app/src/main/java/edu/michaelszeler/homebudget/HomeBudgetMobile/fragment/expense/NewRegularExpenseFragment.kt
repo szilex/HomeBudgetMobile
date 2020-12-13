@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment
+package edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.expense
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationIconClickListener
@@ -74,7 +75,7 @@ class NewRegularExpenseFragment : Fragment() {
 
         val jsonArrayRequest = object: JsonArrayRequest(
             Method.GET,
-            "http://192.168.0.10:8080/expense/categories",
+            "http://10.0.2.2:8080/expense/categories",
             null,
             { response: JSONArray? ->
                 run {
@@ -153,7 +154,7 @@ class NewRegularExpenseFragment : Fragment() {
 
                 val jsonArrayRequest2 = object : JsonObjectRequest(
                     Method.POST,
-                    "http://192.168.0.10:8080/expense",
+                    "http://10.0.2.2:8080/expense",
                     JSONObject(String.format("{\"name\":\"%s\",\"category\":\"%s\",\"amount\":\"%s\",\"startDate\":\"%s\",\"months\":\"%s\"}", name, category, amount, startDate, months)
                     ),
                     { response: JSONObject? ->
