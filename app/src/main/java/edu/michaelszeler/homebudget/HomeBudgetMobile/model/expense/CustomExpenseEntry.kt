@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import java.math.BigDecimal
 import java.util.*
 
-class CustomExpenseEntry (val name: String, val category: String, val amount: BigDecimal, val date: Date, val months: Int) {
+class CustomExpenseEntry (val name: String, val category: String, val amount: BigDecimal, val date: Date) {
     companion object {
         fun convertToCustomExpenseList(content: String): List<RegularExpenseEntry> {
             val gson = Gson()

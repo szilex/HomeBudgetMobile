@@ -44,4 +44,9 @@
     <string name="home_icon">Home Icon</string>
     <string name="starting_date">Starting date</string>
     <string name="new_regular_expense">New regular expense</string>
+    <string name="date">Date</string>
+    <string name="custom_expense">Custom expense</string>
+    <string name="regular_expense">Regular expense</string>
+    <string name="general_info">General info</string>
+    <string name="income">Income</string>
 </resources>

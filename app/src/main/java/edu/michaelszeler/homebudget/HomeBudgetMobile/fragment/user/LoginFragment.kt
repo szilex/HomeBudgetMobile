@@ -133,6 +133,7 @@ class LoginFragment : Fragment() {
 
         handler.postDelayed(runnable, 3000)
 
+        //TODO Remove testing workaround
         sessionManager.createSession("guest123", "pass123")
         (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
 
