@@ -7,29 +7,29 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import kotlinx.android.synthetic.main.dialog_fragment_regular_expense.view.*
 
-class RegularExpenseDialogFragment : DialogFragment() {
+class RegularExpenseDialogFragment private constructor() : DialogFragment() {
 
     companion object {
 
         const val NAME = "Regular expense chart"
 
         private const val KEY_AMOUNT = "amount"
-        private const val KEY_MOTHS = "months"
+        private const val KEY_MONTHS = "months"
         private const val KEY_CURRENT_MONTH = "current_month"
 
         fun newInstance(amount: Double, months: Int, currentMonth: Int): RegularExpenseDialogFragment {
             val args = Bundle()
             args.putDouble(KEY_AMOUNT, amount)
-            args.putInt(KEY_MOTHS, months)
+            args.putInt(KEY_MONTHS, months)
             args.putInt(KEY_CURRENT_MONTH, currentMonth)
             val dialog = RegularExpenseDialogFragment()
             dialog.arguments = args

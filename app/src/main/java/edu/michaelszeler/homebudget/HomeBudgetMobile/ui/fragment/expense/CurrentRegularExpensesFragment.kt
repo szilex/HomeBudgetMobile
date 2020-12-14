@@ -19,7 +19,7 @@ import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.RegularExpenseEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.expense.RegularExpenseCardRecyclerViewAdapter
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense.RegularExpenseCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility

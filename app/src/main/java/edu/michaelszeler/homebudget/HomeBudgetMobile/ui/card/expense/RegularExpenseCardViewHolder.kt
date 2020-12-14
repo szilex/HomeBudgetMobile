@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.expense
+package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

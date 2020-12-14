@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.expense.CustomExpenseCardRecyclerViewAdapter
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense.CustomExpenseCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.CustomExpenseEntry
 import kotlinx.android.synthetic.main.fragment_current_budget_custom_expenses_tab.view.*

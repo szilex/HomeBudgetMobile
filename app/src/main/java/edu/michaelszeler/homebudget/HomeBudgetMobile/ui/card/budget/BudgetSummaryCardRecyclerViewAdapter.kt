@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.budget
+package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.budget
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.budget.BudgetSummaryEntry
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.listener.ShowBudgetSummaryChartOnClickListener
 import java.util.*
 
 class BudgetSummaryCardRecyclerViewAdapter(private val budgetList: List<BudgetSummaryEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<BudgetSummaryCardViewHolder>() {
@@ -25,7 +26,7 @@ class BudgetSummaryCardRecyclerViewAdapter(private val budgetList: List<BudgetSu
             holder.budgetCustomExpenses.text = String.format("%10.2f", product.customExpenses)
             holder.budgetRegularExpenses.text = String.format("%10.2f", product.regularExpenses)
             holder.budgetStrategies.text = String.format("%10.2f", product.strategies)
-            //holder.budgetButton.setOnClickListener(ShowStrategyChartOnClickListener(fragmentManager!!, product.goal.toDouble(), product.months, calculateCurrentMonth(startCalendar)))
+            holder.budgetButton.setOnClickListener(ShowBudgetSummaryChartOnClickListener(fragmentManager!!, product))
         }
     }
 

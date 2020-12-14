@@ -20,7 +20,7 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.budget.BudgetEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.budget.BudgetSummaryEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.budget.BudgetSummaryCardRecyclerViewAdapter
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.budget.BudgetSummaryCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility

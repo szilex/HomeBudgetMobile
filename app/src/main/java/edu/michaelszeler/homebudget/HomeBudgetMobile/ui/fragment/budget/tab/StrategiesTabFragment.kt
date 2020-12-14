@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.adapter.strategy.StrategyCardRecyclerViewAdapter
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.strategy.StrategyCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.strategy.StrategyEntry
 import kotlinx.android.synthetic.main.fragment_current_budget_strategies_tab.view.*
