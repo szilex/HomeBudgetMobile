@@ -15,6 +15,12 @@ class BudgetEntry (val id: Int, val date: Date, val income: BigDecimal, val cust
             val productType = object : TypeToken<BudgetEntry>() {}.type
             return gson.fromJson(content, productType)
         }
+
+        fun convertToBudgetList(content: String): List<BudgetEntry> {
+            val gson = Gson()
+            val productListType = object : TypeToken<ArrayList<BudgetEntry>>() {}.type
+            return gson.fromJson(content, productListType)
+        }
     }
 
     override fun toString(): String {

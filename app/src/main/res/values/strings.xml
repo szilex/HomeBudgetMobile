@@ -49,4 +49,8 @@
     <string name="regular_expense">Regular expense</string>
     <string name="general_info">General info</string>
     <string name="income">Income</string>
+    <string name="budget">Budget</string>
+    <string name="custom_expenses">Custom expenses</string>
+    <string name="regular_expenses">Regular expenses</string>
+    <string name="strategies">Strategies</string>
 </resources>

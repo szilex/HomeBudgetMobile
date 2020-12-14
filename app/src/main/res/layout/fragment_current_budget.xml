@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.budget.CurrentBudgetFragment"
+    tools:context=".ui.fragment.budget.CurrentBudgetFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
@@ -24,7 +24,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/loadingPanel"
+        android:id="@+id/loading_panel_current_budget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -45,7 +45,6 @@
             android:id="@+id/app_bar_layout_current_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.MaterialToolbar

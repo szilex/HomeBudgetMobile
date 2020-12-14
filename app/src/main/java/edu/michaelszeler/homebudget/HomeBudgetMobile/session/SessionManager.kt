@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.widget.Toast
-import edu.michaelszeler.homebudget.HomeBudgetMobile.fragment.user.LoginFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.navigation.NavigationHost
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.user.LoginFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 
 
 class SessionManager(context: Context?) {
