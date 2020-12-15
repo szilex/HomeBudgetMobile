@@ -25,10 +25,10 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.budget.BudgetEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.CustomExpensesTabFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.GeneralTabFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.RegularExpensesTabFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.StrategiesTabFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.current.CustomExpensesTabFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.current.GeneralTabFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.current.RegularExpensesTabFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.current.StrategiesTabFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
@@ -136,10 +136,7 @@ class CurrentBudgetFragment : Fragment() {
                 activity!!,
                 view.relative_layout_current_budget,
                 AccelerateDecelerateInterpolator(),
-                ContextCompat.getDrawable(
-                    context!!,
-                    R.drawable.menu_icon
-                ),
+                ContextCompat.getDrawable(context!!, R.drawable.menu_icon),
                 ContextCompat.getDrawable(context!!, R.drawable.menu_icon)
             )
         )

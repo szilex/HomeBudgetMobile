@@ -2,13 +2,12 @@ package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.CustomExpenseEntry
 import java.util.*
 
-class CustomExpenseCardRecyclerViewAdapter(private val customExpenseList: List<CustomExpenseEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<CustomExpenseCardViewHolder>() {
+class CustomExpenseCardRecyclerViewAdapter(private val customExpenseList: List<CustomExpenseEntry>) : RecyclerView.Adapter<CustomExpenseCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomExpenseCardViewHolder {
         val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_custom_expense_card, parent, false)

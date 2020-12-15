@@ -53,4 +53,7 @@
     <string name="custom_expenses">Custom expenses</string>
     <string name="regular_expenses">Regular expenses</string>
     <string name="strategies">Strategies</string>
+    <string name="plus_new_expense">+ New expense</string>
+    <string name="summary">Summary</string>
+    <string name="create">Create</string>
 </resources>

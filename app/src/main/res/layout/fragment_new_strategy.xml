@@ -255,9 +255,7 @@
                         android:textSize="25sp"
                         android:fontFamily="sans-serif-medium"
                         android:backgroundTint="@color/gradStart"
-                        app:cornerRadius="10dp">
-
-                    </com.google.android.material.button.MaterialButton>
+                        app:cornerRadius="10dp"/>
 
                 </LinearLayout>
 

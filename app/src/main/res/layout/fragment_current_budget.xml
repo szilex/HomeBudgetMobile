@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -64,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/app_bar_layout_current_budget">
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout_current_budget"
                 style="@style/Widget.MaterialComponents.TabLayout.Colored"
@@ -81,97 +83,9 @@
                 android:layout_below="@id/tab_layout_current_budget"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
         </RelativeLayout>
+
     </RelativeLayout>
 
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-<!--
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.budget.CurrentBudgetFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
-
-    <LinearLayout
-        style="@style/Widget.HomeBudgetMobile.Backdrop"
-        android:id="@+id/backdrop_current_budget"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="100dp"
-        android:paddingBottom="100dp"
-        android:background="@drawable/gradient_background">
-
-        <include layout="@layout/backdrop_all_pages" />
-    </LinearLayout>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_current_budget"
-            style="@style/Widget.HomeBudgetMobile.Toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
-            app:navigationIcon="@drawable/menu_icon"
-            app:title="Home Budget"
-            app:titleTextColor="@color/white"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    &lt;!&ndash;<androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view_current_budget"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_background"
-        android:elevation="8dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_view_current_budget_strategies"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_background"
-            android:elevation="8dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_current_budget_strategies"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.core.widget.NestedScrollView>&ndash;&gt;
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_current_budget"
-        style="@style/Widget.MaterialComponents.TabLayout.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager_current_budget"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>-->

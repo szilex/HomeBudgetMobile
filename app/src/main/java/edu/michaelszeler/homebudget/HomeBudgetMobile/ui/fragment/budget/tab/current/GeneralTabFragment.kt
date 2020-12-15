@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab
+package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.current
 
 import android.os.Bundle
 import android.view.LayoutInflater

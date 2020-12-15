@@ -5,14 +5,14 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view_regular_expenses_tab"
+        android:id="@+id/nested_scroll_view_current_budget_regular_expenses_tab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/gradient_background"
         android:elevation="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_regular_expenses_tab"
+            android:id="@+id/recycler_view_current_budget_regular_expenses_tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
