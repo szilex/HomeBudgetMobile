@@ -10,7 +10,7 @@ import java.util.*
 class CustomExpenseCardRecyclerViewAdapter(private val customExpenseList: List<CustomExpenseEntry>) : RecyclerView.Adapter<CustomExpenseCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomExpenseCardViewHolder {
-        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_custom_expense_card, parent, false)
+        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_custom_expense, parent, false)
         return CustomExpenseCardViewHolder(layoutView)
     }
 

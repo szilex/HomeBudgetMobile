@@ -64,6 +64,7 @@ class CustomExpenseDialog : DialogFragment() {
             val myFormat = "yyyy-MM-dd"
             val sdf = SimpleDateFormat(myFormat, Locale.ENGLISH)
             editText.setText(sdf.format(calendar.time))
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(calendar.time)
         }
         editText.setOnClickListener{
             DatePickerDialog(activity as AppCompatActivity, R.style.DialogTheme, onDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
@@ -128,7 +129,7 @@ class CustomExpenseDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
 }

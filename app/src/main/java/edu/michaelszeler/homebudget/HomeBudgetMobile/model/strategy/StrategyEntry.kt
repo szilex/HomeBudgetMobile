@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import java.math.BigDecimal
 import java.util.*
 
-class StrategyEntry(val name: String, val description: String, val category: String, val goal: BigDecimal, val startDate: Date, val months: Int) {
+class StrategyEntry(val id: Int, val name: String, val description: String, val category: String, val goal: BigDecimal, val startDate: Date, val months: Int) {
 
     companion object {
 

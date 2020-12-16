@@ -12,7 +12,7 @@ import java.util.*
 class StrategyCardRecyclerViewAdapter(private val strategyList: List<StrategyEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<StrategyCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StrategyCardViewHolder {
-        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_strategy_card, parent, false)
+        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_strategy, parent, false)
         return StrategyCardViewHolder(layoutView)
     }
 

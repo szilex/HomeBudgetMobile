@@ -12,7 +12,7 @@ import java.util.*
 class RegularExpenseCardRecyclerViewAdapter(private val regularExpenseList: List<RegularExpenseEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<RegularExpenseCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegularExpenseCardViewHolder {
-        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_regular_expense_card, parent, false)
+        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_regular_expense, parent, false)
         return RegularExpenseCardViewHolder(layoutView)
     }
 

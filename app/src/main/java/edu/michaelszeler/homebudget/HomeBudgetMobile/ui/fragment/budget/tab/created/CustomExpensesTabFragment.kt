@@ -17,8 +17,9 @@ import java.math.BigDecimal
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 
-class CustomExpensesTabFragment(private val expenses : List<CustomExpenseEntry>) : Fragment(), FragmentCallback {
+class CustomExpensesTabFragment(private val categories : List<String> ,private val expenses : List<CustomExpenseEntry>) : Fragment(), FragmentCallback {
 
+    private lateinit var parent: FragmentCallback
     private lateinit var mutableExpenses : MutableList<CustomExpenseEntry>
     private lateinit var adapter: CustomExpenseCardRecyclerViewAdapter
 
@@ -43,7 +44,7 @@ class CustomExpensesTabFragment(private val expenses : List<CustomExpenseEntry>)
         view.recycler_view_new_budget_custom_expenses_tab.addItemDecoration(CustomGridItemDecoration(largePadding, smallPadding))
 
         view.button_new_budget_custom_expense_tab_add.setOnClickListener {
-            val dialog = CustomExpenseDialog.newInstance(listOf("Other", "Hobby", "Electronics"))
+            val dialog = CustomExpenseDialog.newInstance(categories)
             dialog.setTargetFragment(this, 0)
             dialog.show(fragmentManager!!, CustomExpenseDialog.NAME)
         }
@@ -60,7 +61,13 @@ class CustomExpensesTabFragment(private val expenses : List<CustomExpenseEntry>)
         val date = simpleDateFormat.parse(args.getString("date"), position)
         val customExpense = CustomExpenseEntry(name!!, category!!, amount, date)
         mutableExpenses.add(0, customExpense)
+        args.putString("tab", "custom expenses")
+        parent.callback(args)
         adapter.notifyDataSetChanged()
 
+    }
+
+    fun setFragmentCallback(parent: FragmentCallback) {
+        this.parent = parent
     }
 }

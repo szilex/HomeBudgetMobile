@@ -12,7 +12,7 @@ import java.util.*
 class BudgetSummaryCardRecyclerViewAdapter(private val budgetList: List<BudgetSummaryEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<BudgetSummaryCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetSummaryCardViewHolder {
-        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_budget_summary_card, parent, false)
+        val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_budget_summary, parent, false)
         return BudgetSummaryCardViewHolder(layoutView)
     }
 

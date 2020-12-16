@@ -24,11 +24,11 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
-import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.validation.TextInputValidator
 import kotlinx.android.synthetic.main.fragment_new_expense.view.*
 import org.json.JSONArray
@@ -137,16 +137,6 @@ class NewRegularExpenseFragment : Fragment() {
             val amount = view.edit_text_new_expense_amount.text.toString()
             val startDate = view.edit_text_new_expense_start_date.text.toString()
             val months = view.edit_text_new_expense_months.text.toString()
-
-/*            if (name.isBlank() || category.isBlank() || amount.isBlank() || startDate.isBlank() || months.isBlank()) {
-
-                if (name.isBlank()) { view.edit_text_new_expense_name.error = "Please enter name" }
-                if (category.isBlank()) { view.spinner_new_expense_category.error = "Please choose category" }
-                if (amount.isBlank()) { view.edit_text_new_expense_amount.error = "Please enter amount" }
-                if (startDate.isBlank()) { view.edit_text_new_expense_start_date.error = "Please enter start date" }
-                if (months.isBlank()) { view.edit_text_new_expense_months.error = "Please enter amount of months" }
-                return@setOnClickListener
-            }*/
 
             if (TextInputValidator.isExpenseNameValid(name) && category.isNotBlank() && TextInputValidator.isAmountValid(amount) && TextInputValidator.isDateValid(startDate) && TextInputValidator.isMonthAmountValid(months)) {
 
