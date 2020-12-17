@@ -10,19 +10,14 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.Navigation
 
 class SessionManager(context: Context?) {
     var preferences: SharedPreferences? = null
-
     var editor: Editor? = null
 
     private var _context: Context? = context
-
     private var _privateMode = 0
 
     private val PREF_NAME = "AndroidPreferences"
-
     private val IS_LOGIN = "IsLoggedIn"
-
     private val KEY_LOGIN = "login"
-
     private val KEY_PASSWORD = "password"
 
 
