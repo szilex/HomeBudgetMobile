@@ -1,7 +1,6 @@
 package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.strategy
 
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -53,8 +52,7 @@ class CurrentStrategiesFragment : Fragment() {
                 ContextCompat.getDrawable(context!!, R.drawable.menu_icon))
         )
 
-        val login = sessionManager.getUserDetails()?.get("login")
-        val password = sessionManager.getUserDetails()?.get("password")
+        val token = sessionManager.getToken()!!
         val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
 
         val jsonArrayRequest = object: JsonArrayRequest(
@@ -86,31 +84,35 @@ class CurrentStrategiesFragment : Fragment() {
                 run {
                     Log.e("Error rest response", error.toString())
                     val networkResponse : NetworkResponse? = error?.networkResponse
-                    val jsonError : String? = String(networkResponse?.data!!)
-                    val answer = JSONObject(jsonError ?: "")
-                    if (answer.has("message")) {
-                        Log.e("Error rest data", answer.getString("message") ?: "")
-                        when (answer.getString("message")) {
-                            "user not found" -> {
-                                Toast.makeText(activity, "Could not find user", Toast.LENGTH_SHORT).show()
-                            }
-                            "no strategies found" -> {
-                                Toast.makeText(activity, "Could not find any current strategies", Toast.LENGTH_SHORT).show()
-                            }
-                            else -> {
-                                Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    if (networkResponse?.statusCode == 401) {
+                        Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                     } else {
-                        Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                        val jsonError : String? = String(networkResponse?.data!!)
+                        val answer = JSONObject(jsonError ?: "")
+                        if (answer.has("message")) {
+                            Log.e("Error rest data", answer.getString("message") ?: "")
+                            when (answer.getString("message")) {
+                                "user not found" -> {
+                                    Toast.makeText(activity, "Could not find user", Toast.LENGTH_SHORT).show()
+                                }
+                                "no strategies found" -> {
+                                    Toast.makeText(activity, "Could not find any current strategies", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {
+                                    Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                        }
                     }
-
                 }
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
-                headers["Authorization"] = String.format("Basic %s", Base64.encodeToString(String.format("%s:%s", login, password).toByteArray(), Base64.NO_WRAP))
+                headers["Authorization"] = token
                 return headers
             }
         }

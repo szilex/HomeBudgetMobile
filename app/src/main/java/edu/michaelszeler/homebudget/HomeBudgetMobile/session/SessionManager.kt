@@ -19,17 +19,18 @@ class SessionManager(context: Context?) {
     private val IS_LOGIN = "IsLoggedIn"
     private val KEY_LOGIN = "login"
     private val KEY_PASSWORD = "password"
-
+    private val KEY_TOKEN = "token"
 
     init {
         preferences = _context?.getSharedPreferences(PREF_NAME, _privateMode)
         editor = preferences!!.edit()
     }
 
-    fun createSession(username: String, password: String) {
+    fun createSession(username: String, password: String, token: String) {
         editor?.putBoolean(IS_LOGIN, true)
         editor?.putString(KEY_LOGIN, username)
         editor?.putString(KEY_PASSWORD, password)
+        editor?.putString(KEY_TOKEN, token)
         editor?.commit()
     }
 
@@ -38,6 +39,10 @@ class SessionManager(context: Context?) {
         user[KEY_LOGIN] = preferences!!.getString(KEY_LOGIN, null)
         user[KEY_PASSWORD] = preferences!!.getString(KEY_PASSWORD, null)
         return user
+    }
+
+    fun getToken(): String? {
+        return preferences!!.getString(KEY_TOKEN, null)
     }
 
     fun checkLogin() {

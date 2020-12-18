@@ -42,7 +42,7 @@ class RegisterFragment : Fragment() {
 
                     val jsonObjectRequest = JsonObjectRequest(
                         Request.Method.POST,
-                        "http://10.0.2.2:8080/user",
+                        "http://10.0.2.2:8080/user/register",
                         JSONObject(String.format("{\"login\":\"%s\",\"password\":\"%s\",\"firstName\":\"%s\",\"lastName\":\"%s\"}", login, password, firstName, lastName)),
                         {
                                 response: JSONObject? ->

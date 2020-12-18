@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -69,8 +68,7 @@ class NewRegularExpenseFragment : Fragment() {
 
         FragmentNavigationUtility.setUpMenuButtons((activity as NavigationHost), view)
 
-        val login = sessionManager.getUserDetails()?.get("login")
-        val password = sessionManager.getUserDetails()?.get("password")
+        val token = sessionManager.getToken()!!
         val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
 
         val jsonArrayRequest = object: JsonArrayRequest(
@@ -104,11 +102,7 @@ class NewRegularExpenseFragment : Fragment() {
         ) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
-                headers["Authorization"] = String.format(
-                    "Basic %s", Base64.encodeToString(
-                        String.format("%s:%s", login, password).toByteArray(), Base64.NO_WRAP
-                    )
-                )
+                headers["Authorization"] = token
                 return headers
             }
         }
@@ -158,30 +152,36 @@ class NewRegularExpenseFragment : Fragment() {
                         run {
                             Log.e("Error rest response", error.toString())
                             val networkResponse: NetworkResponse? = error?.networkResponse
-                            val jsonError: String? = String(networkResponse?.data!!)
-                            val answer = JSONObject(jsonError ?: "{}")
-                            if (answer.has("message")) {
-                                Log.e("Error rest data", answer.getString("message") ?: "empty")
-                                when (answer.getString("message")) {
-                                    "insufficient argument list" -> {
-                                        Toast.makeText(activity,"Server received insufficient argument list",Toast.LENGTH_SHORT).show()
-                                    }
-                                    "category not found" -> {
-                                        Toast.makeText(activity,"Category could not be found", Toast.LENGTH_SHORT).show()
-                                    }
-                                    else -> {
-                                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                            if (networkResponse?.statusCode == 401) {
+                                Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                             } else {
-                                Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                val jsonError: String? = String(networkResponse?.data!!)
+                                val answer = JSONObject(jsonError ?: "{}")
+                                if (answer.has("message")) {
+                                    Log.e("Error rest data", answer.getString("message") ?: "empty")
+                                    when (answer.getString("message")) {
+                                        "insufficient argument list" -> {
+                                            Toast.makeText(activity,"Server received insufficient argument list",Toast.LENGTH_SHORT).show()
+                                        }
+                                        "category not found" -> {
+                                            Toast.makeText(activity,"Category could not be found", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else -> {
+                                            Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     }
                 ) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val headers = HashMap<String, String>()
-                        headers["Authorization"] = String.format("Basic %s",Base64.encodeToString(String.format("%s:%s", login, password).toByteArray(), Base64.NO_WRAP))
+                        headers["Authorization"] = token
+                        headers["Content-Type"] = "application/json"
                         return headers
                     }
                 }

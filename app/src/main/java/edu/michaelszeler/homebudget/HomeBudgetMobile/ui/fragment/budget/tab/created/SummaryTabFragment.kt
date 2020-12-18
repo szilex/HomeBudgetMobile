@@ -1,7 +1,6 @@
 package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.tab.created
 
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -48,8 +47,7 @@ class SummaryTabFragment() : Fragment() {
         view.button_new_budget_summary_tab_create.setOnClickListener {
             if (isArgumentListSet()) {
 
-                val login = sessionManager.getUserDetails()?.get("login")
-                val password = sessionManager.getUserDetails()?.get("password")
+                val token = sessionManager.getToken()!!
                 val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
 
                 val budget = BudgetEntry(0, date, income, customExpenses, regularExpenses, strategies)
@@ -123,28 +121,33 @@ class SummaryTabFragment() : Fragment() {
                             run {
                                 Log.e("Error rest response", error.toString())
                                 val networkResponse : NetworkResponse? = error?.networkResponse
-                                val jsonError : String? = String(networkResponse?.data!!)
-                                val answer = JSONObject(jsonError ?: "{}")
-                                if (answer.has("message")) {
-                                    Log.e("Error rest data", answer.getString("message") ?: "empty")
-                                    when (answer.getString("message")) {
-                                        "insufficient argument list" -> {
-                                            Toast.makeText(activity, "Server received insufficient argument list", Toast.LENGTH_SHORT).show()
-                                        }
-                                        else -> {
-                                            Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
+                                if (networkResponse?.statusCode == 401) {
+                                    Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                    (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                                 } else {
-                                    Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                    val jsonError : String? = String(networkResponse?.data!!)
+                                    val answer = JSONObject(jsonError ?: "{}")
+                                    if (answer.has("message")) {
+                                        Log.e("Error rest data", answer.getString("message") ?: "empty")
+                                        when (answer.getString("message")) {
+                                            "insufficient argument list" -> {
+                                                Toast.makeText(activity, "Server received insufficient argument list", Toast.LENGTH_SHORT).show()
+                                            }
+                                            else -> {
+                                                Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
-
                             }
                         }
                 ) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val headers = HashMap<String, String>()
-                        headers["Authorization"] = String.format("Basic %s", Base64.encodeToString(String.format("%s:%s", login, password).toByteArray(), Base64.NO_WRAP))
+                        headers["Authorization"] = token
+                        headers["Content-Type"] = "application/json"
                         return headers
                     }
                 }

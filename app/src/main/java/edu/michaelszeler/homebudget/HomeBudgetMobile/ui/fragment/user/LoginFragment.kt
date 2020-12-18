@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +13,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.android.volley.NetworkResponse
 import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputLayout
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
+import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
-import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.validation.TextInputValidator
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import org.json.JSONObject
-
 
 class LoginFragment : Fragment() {
 
@@ -48,63 +47,73 @@ class LoginFragment : Fragment() {
             if (TextInputValidator.isLoginValid(login) && TextInputValidator.isPasswordValid(password)) {
 
                 val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
+                var token = ""
 
                 val jsonObjectRequest = object: JsonObjectRequest(
-                    Method.GET,
-                    "http://10.0.2.2:8080/user",
-                    null,
-                    { response: JSONObject? ->
-                        run {
-                            Log.e("Rest Response", response.toString())
-                            sessionManager.createSession(login, password)
-                            (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
-                        }
-                    },
-                    { error: VolleyError? ->
-                        run {
-                            Log.e("Error rest response", error.toString())
-                            val networkResponse: NetworkResponse? = error?.networkResponse
+                        Method.POST,
+                        "http://10.0.2.2:8080/login",
+                        JSONObject(String.format("{\"login\":\"%s\",\"password\":\"%s\"}", login, password)),
+                        { response: JSONObject? ->
+                            run {
+                                Log.e("Rest Response", response.toString())
+                                sessionManager.createSession(login, password, token)
+                                (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
+                            }
+                        },
+                        { error: VolleyError? ->
+                            run {
+                                Log.e("Error rest response", error.toString())
+                                val networkResponse: NetworkResponse? = error?.networkResponse
 
-                            val jsonError : String? = String(networkResponse?.data!!)
-                            //val jsonError: String? = networkResponse?.data?.let { it1 -> String(it1) }
-
-                            val answer = JSONObject(jsonError ?: "{}")
-                            if (answer.has("message")) {
-                                Log.e("Error rest data", answer.getString("message") ?: "empty")
-                                when (answer.getString("message")) {
-                                    "incorrect username" -> {
-                                        view.text_input_layout_login_login.error =
-                                            "Incorrect login"
+                                if (networkResponse?.statusCode == 401) {
+                                    Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                    (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
+                                } else {
+                                    val jsonError: String? = String(networkResponse?.data!!)
+                                    val answer = JSONObject(jsonError ?: "{}")
+                                    if (answer.has("message")) {
+                                        Log.e("Error rest data", answer.getString("message") ?: "empty")
+                                        when (answer.getString("message")) {
+                                            "incorrect username" -> {
+                                                view.text_input_layout_login_login.error =
+                                                        "Incorrect login"
+                                            }
+                                            "incorrect password" -> {
+                                                view.text_input_layout_login_password.error =
+                                                        "Incorrect password"
+                                            }
+                                            "Bad credentials" -> {
+                                                Toast.makeText(activity, "Incorrect credentials", Toast.LENGTH_SHORT).show()
+                                            }
+                                            else -> {
+                                                Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                     }
-                                    "incorrect password" -> {
-                                        view.text_input_layout_login_password.error =
-                                            "Incorrect password"
-                                    }
-                                    "Bad credentials" -> {
-                                        Toast.makeText(activity, "Incorrect credentials", Toast.LENGTH_SHORT).show()
-                                    }
-                                    else -> {
-                                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                    else {
+                                        Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
                                     }
                                 }
-                            } else {
-                                Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
                 ) {
                     override fun getHeaders(): MutableMap<String, String> {
                         val headers = HashMap<String, String>()
-                        headers["Authorization"] = String.format(
-                            "Basic %s", Base64.encodeToString(
-                                String.format(
-                                    "%s:%s",
-                                    login,
-                                    password
-                                ).toByteArray(), Base64.NO_WRAP
-                            )
-                        )
+                        headers["Content-Type"] = "application/json"
                         return headers
+                    }
+
+                    override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
+                        val headers = response?.headers
+                        val newResponse : NetworkResponse
+                        token = headers?.get("Authorization")!!
+                        newResponse = if (response.data.isEmpty()) {
+                            val responseData = "{}".toByteArray()
+                            NetworkResponse(response.statusCode, responseData, response.notModified, response.networkTimeMs, response.allHeaders)
+                        } else {
+                            response
+                        }
+                        return super.parseNetworkResponse(newResponse)
                     }
                 }
 
@@ -133,17 +142,16 @@ class LoginFragment : Fragment() {
 
         handler.postDelayed(runnable, 3000)
 
-        //TODO Remove testing workaround
-        sessionManager.createSession("guest123", "pass123")
-        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
-
         return view
     }
 
     private fun setUpTextChangedListener(editText: EditText, textInputLayout: TextInputLayout) {
         editText.addTextChangedListener(object :
-            TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { textInputLayout.error = null }
+                TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                textInputLayout.error = null
+            }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {}
         })

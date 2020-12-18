@@ -2,7 +2,6 @@ package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Base64
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -59,8 +58,7 @@ class CurrentBudgetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_current_budget, container, false)
         (activity as AppCompatActivity).setSupportActionBar(view.toolbar_current_budget)
 
-        val login = sessionManager.getUserDetails()?.get("login")
-        val password = sessionManager.getUserDetails()?.get("password")
+        val token = sessionManager.getToken()!!
         val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
 
         val jsonObjectRequest = object: JsonObjectRequest(
@@ -70,61 +68,51 @@ class CurrentBudgetFragment : Fragment() {
             { response: JSONObject? ->
                 run {
                     Log.e("Rest Response", response.toString())
-
                     budget = BudgetEntry.convertToBudget(response.toString())
-
                     viewPager = view.findViewById(R.id.view_pager_current_budget)
                     pagerAdapter = BudgetPagerAdapter(activity)
                     viewPager!!.adapter = pagerAdapter
                     val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout_current_budget)
-                    TabLayoutMediator(
-                        tabLayout,
-                        viewPager!!
-                    ) { tab: TabLayout.Tab, position: Int -> tab.text = titles[position] }.attach()
+                    TabLayoutMediator(tabLayout, viewPager!!) { tab: TabLayout.Tab, position: Int -> tab.text = titles[position] }.attach()
                     val handler = Handler()
                     handler.postDelayed( {
                         view.findViewById<RelativeLayout>(R.id.loading_panel_current_budget).visibility = View.GONE
                     }, 500)
-
                 }
             },
             { error: VolleyError? ->
                 run {
                     Log.e("Error rest response", error.toString())
                     val networkResponse: NetworkResponse? = error?.networkResponse
-                    val jsonError: String? = String(networkResponse?.data!!)
-                    val answer = JSONObject(jsonError ?: "")
-                    if (answer.has("message")) {
-                        Log.e("Error rest data", answer.getString("message") ?: "")
-                        when (answer.getString("message")) {
-                            "user not found" -> {
-                                Toast.makeText(
-                                    activity,
-                                    "Could not find user",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            "no current budget" -> {
-                                Toast.makeText(
-                                    activity,
-                                    "Could not find current budget",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            else -> {
-                                Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    if (networkResponse?.statusCode == 401) {
+                        Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                     } else {
-                        Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                        val jsonError: String? = String(networkResponse?.data!!)
+                        val answer = JSONObject(jsonError ?: "")
+                        if (answer.has("message")) {
+                            Log.e("Error rest data", answer.getString("message") ?: "")
+                            when (answer.getString("message")) {
+                                "user not found" -> {
+                                    Toast.makeText(activity,"Could not find user", Toast.LENGTH_SHORT).show()
+                                }
+                                "no current budget" -> {
+                                    Toast.makeText(activity,"Could not find current budget", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {
+                                    Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                        }
                     }
-
                 }
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
-                headers["Authorization"] = String.format("Basic %s", Base64.encodeToString(String.format("%s:%s", login, password).toByteArray(), Base64.NO_WRAP))
+                headers["Authorization"] = token
                 return headers
             }
         }
