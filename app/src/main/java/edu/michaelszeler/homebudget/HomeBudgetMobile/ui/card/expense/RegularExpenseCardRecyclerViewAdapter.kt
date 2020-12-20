@@ -1,15 +1,23 @@
 package edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.listener.ShowRegularExpenseChartOnClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.RegularExpenseEntry
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.listener.DeleteRegularExpenseOnClickListener
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.listener.ShowRegularExpenseChartOnClickListener
 import java.util.*
 
 class RegularExpenseCardRecyclerViewAdapter(private val regularExpenseList: List<RegularExpenseEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<RegularExpenseCardViewHolder>() {
+
+    private lateinit var deleteRegularExpenseOnClickListener: DeleteRegularExpenseOnClickListener
+
+    fun setDeleteRegularExpenseOnClickListener (listener: DeleteRegularExpenseOnClickListener) {
+        this.deleteRegularExpenseOnClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegularExpenseCardViewHolder {
         val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_regular_expense, parent, false)
@@ -27,6 +35,14 @@ class RegularExpenseCardRecyclerViewAdapter(private val regularExpenseList: List
             holder.regularExpenseStartDate.text = String.format("%d-%d-%d", startCalendar.get(Calendar.YEAR), startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH))
             holder.regularExpenseMonths.text = product.months.toString()
             holder.regularExpenseButton.setOnClickListener(ShowRegularExpenseChartOnClickListener(fragmentManager!!, product.amount.toDouble(), product.months, calculateCurrentMonth(startCalendar)))
+            if (this::deleteRegularExpenseOnClickListener.isInitialized) {
+                holder.regularExpenseDeleteButton.setOnClickListener {
+                    deleteRegularExpenseOnClickListener.setRegularExpense(regularExpenseList[position])
+                    deleteRegularExpenseOnClickListener.onClick(it)
+                }
+            } else {
+                holder.regularExpenseDeleteButton.visibility = View.GONE
+            }
         }
     }
 

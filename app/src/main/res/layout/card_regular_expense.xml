@@ -20,13 +20,31 @@
         android:padding="8dp"
         android:gravity="center_horizontal">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/regular_expense"
-            android:textColor="@color/white"
-            android:textSize="30sp">
-        </com.google.android.material.textview.MaterialTextView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/regular_expense"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:layout_gravity="center">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_regular_expense_card_delete"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:background="@color/transparent"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                app:icon="@drawable/delete_icon"
+                app:iconTint="@color/white" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

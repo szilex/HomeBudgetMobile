@@ -14,6 +14,7 @@ import com.android.volley.NetworkResponse
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.RegularExpenseEntry
@@ -21,6 +22,7 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.card.expense.RegularExpenseCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.MainMenuFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.listener.DeleteRegularExpenseOnClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
@@ -28,9 +30,13 @@ import kotlinx.android.synthetic.main.fragment_current_regular_expenses.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-class CurrentRegularExpensesFragment : Fragment() {
+class CurrentRegularExpensesFragment : Fragment(), DeleteRegularExpenseOnClickListener {
 
     private lateinit var sessionManager: SessionManager
+    private lateinit var regularExpenseToDelete: RegularExpenseEntry
+    private lateinit var adapter: RegularExpenseCardRecyclerViewAdapter
+    private lateinit var regularExpenseEntryList: MutableList<RegularExpenseEntry>
+    private lateinit var requestQueue: RequestQueue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +59,7 @@ class CurrentRegularExpensesFragment : Fragment() {
         )
 
         val token = sessionManager.getToken()!!
-        val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
+        requestQueue = Volley.newRequestQueue(activity)
 
         val jsonArrayRequest = object: JsonArrayRequest(
             Method.GET,
@@ -68,8 +74,9 @@ class CurrentRegularExpensesFragment : Fragment() {
                     val gridLayoutManager = GridLayoutManager(context, 1, RecyclerView.VERTICAL, false)
 
                     view.recycler_view_current_regular_expenses.layoutManager = gridLayoutManager
-                    val adapter = RegularExpenseCardRecyclerViewAdapter(RegularExpenseEntry.convertToRegularExpenseList(response.toString()), fragmentManager)
-
+                    regularExpenseEntryList = RegularExpenseEntry.convertToRegularExpenseList(response.toString()).toMutableList()
+                    adapter = RegularExpenseCardRecyclerViewAdapter(regularExpenseEntryList, fragmentManager)
+                    adapter.setDeleteRegularExpenseOnClickListener(this)
                     view.recycler_view_current_regular_expenses.adapter = adapter
 
                     val largePadding = resources.getDimensionPixelSize(R.dimen.strategy_grid_spacing)
@@ -123,6 +130,70 @@ class CurrentRegularExpensesFragment : Fragment() {
         FragmentNavigationUtility.setUpMenuButtons((activity as NavigationHost), view)
 
         return view
+    }
+
+    override fun setRegularExpense(expense: RegularExpenseEntry) {
+        this.regularExpenseToDelete = expense
+    }
+
+    override fun onClick(v: View?) {
+        if (this::regularExpenseToDelete.isInitialized) {
+            val token = sessionManager.getToken()!!
+            val jsonObjectRequest = object: JsonObjectRequest(
+                    Method.DELETE,
+                    String.format("http://10.0.2.2:8080/expense?id=%d", regularExpenseToDelete.id),
+                    null,
+                    {
+                        response: JSONObject? ->
+                        run {
+                            Log.e("Rest Response", response.toString())
+                            regularExpenseEntryList.removeAt(regularExpenseEntryList.indexOf(regularExpenseToDelete))
+                            adapter.notifyDataSetChanged()
+                            Toast.makeText(activity, "Expense deleted!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    {
+                        error: VolleyError? ->
+                        run {
+                            Log.e("Error rest response", error.toString())
+                            val networkResponse : NetworkResponse? = error?.networkResponse
+                            if (networkResponse?.statusCode == 401) {
+                                Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
+                            } else {
+                                val jsonError : String? = String(networkResponse?.data!!)
+                                val answer = JSONObject(jsonError ?: "")
+                                if (answer.has("message")) {
+                                    Log.e("Error rest data", answer.getString("message") ?: "")
+                                    when (answer.getString("message")) {
+                                        "Expense id not specified" -> {
+                                            Toast.makeText(activity, "Could not delete expense", Toast.LENGTH_SHORT).show()
+                                        }
+                                        "Expense not found" -> {
+                                            Toast.makeText(activity, "Strategy has not been found", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else -> {
+                                            Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Authorization"] = token
+                    headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
+            requestQueue.add(jsonObjectRequest)
+        } else {
+            Toast.makeText(activity, "Cannot delete strategy", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

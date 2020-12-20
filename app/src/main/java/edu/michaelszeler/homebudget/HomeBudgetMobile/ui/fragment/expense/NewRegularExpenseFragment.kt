@@ -139,8 +139,7 @@ class NewRegularExpenseFragment : Fragment() {
                 val jsonArrayRequest2 = object : JsonObjectRequest(
                     Method.POST,
                     "http://10.0.2.2:8080/expense",
-                    JSONObject(String.format("{\"name\":\"%s\",\"category\":\"%s\",\"amount\":\"%s\",\"startDate\":\"%s\",\"months\":\"%s\"}", name, category, amount, startDate, months)
-                    ),
+                    JSONObject(String.format("{\"name\":\"%s\",\"category\":\"%s\",\"amount\":\"%s\",\"startDate\":\"%s\",\"months\":\"%s\"}", name, category, amount, startDate, months)),
                     { response: JSONObject? ->
                         run {
                             Log.e("Rest Response", response.toString())
