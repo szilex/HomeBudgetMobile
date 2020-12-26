@@ -33,7 +33,7 @@ class StrategyCardRecyclerViewAdapter(private val strategyList: List<StrategyEnt
             holder.strategyDescription.text = product.description
             holder.strategyCategory.text = product.category
             holder.strategyGoal.text = product.goal.toString()
-            holder.strategyStartDate.text = String.format("%d-%d-%d", startCalendar.get(Calendar.YEAR), startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH))
+            holder.strategyStartDate.text = String.format("%d-%d-%d", startCalendar.get(Calendar.YEAR), startCalendar.get(Calendar.MONTH) + 1, startCalendar.get(Calendar.DAY_OF_MONTH))
             holder.strategyMonths.text = product.months.toString()
             holder.strategyButton.setOnClickListener(ShowStrategyChartOnClickListener(fragmentManager!!, product.goal.toDouble(), product.months, calculateCurrentMonth(startCalendar)))
             if (this::deleteStrategyOnClickListener.isInitialized) {

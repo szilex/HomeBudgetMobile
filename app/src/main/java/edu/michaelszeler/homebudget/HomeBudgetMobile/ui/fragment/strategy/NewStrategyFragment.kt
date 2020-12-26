@@ -121,8 +121,7 @@ class NewStrategyFragment : Fragment() {
         }
 
         editText.setOnClickListener{
-            DatePickerDialog(activity as AppCompatActivity, R.style.DialogTheme, date, calendar.get(
-                Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            DatePickerDialog(activity as AppCompatActivity, R.style.DialogTheme, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
         view.button_new_strategy_save.setOnClickListener {

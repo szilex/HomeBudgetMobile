@@ -88,7 +88,6 @@ class ArchiveBudgetsFragment : Fragment() {
                         val networkResponse : NetworkResponse? = error?.networkResponse
                         if (networkResponse?.statusCode == 401) {
                             Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
-                            (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                         } else {
                             val jsonError: String? = String(networkResponse?.data!!)
                             val answer = JSONObject(jsonError ?: "")
@@ -109,6 +108,7 @@ class ArchiveBudgetsFragment : Fragment() {
                                 Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
                             }
                         }
+                        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                     }
                 }
         ) {

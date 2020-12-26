@@ -86,7 +86,6 @@ class CurrentBudgetFragment : Fragment() {
                     val networkResponse: NetworkResponse? = error?.networkResponse
                     if (networkResponse?.statusCode == 401) {
                         Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
-                        (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                     } else {
                         val jsonError: String? = String(networkResponse?.data!!)
                         val answer = JSONObject(jsonError ?: "")
@@ -96,8 +95,11 @@ class CurrentBudgetFragment : Fragment() {
                                 "user not found" -> {
                                     Toast.makeText(activity,"Could not find user", Toast.LENGTH_SHORT).show()
                                 }
-                                "no current budget" -> {
-                                    Toast.makeText(activity,"Could not find current budget", Toast.LENGTH_SHORT).show()
+                                "no budget found" -> {
+                                    Toast.makeText(activity,"No budget found", Toast.LENGTH_SHORT).show();
+                                }
+                                "no current budget found" -> {
+                                    Toast.makeText(activity,"No current budget found", Toast.LENGTH_SHORT).show()
                                 }
                                 else -> {
                                     Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
@@ -107,6 +109,7 @@ class CurrentBudgetFragment : Fragment() {
                             Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
                         }
                     }
+                    (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                 }
             }
         ) {

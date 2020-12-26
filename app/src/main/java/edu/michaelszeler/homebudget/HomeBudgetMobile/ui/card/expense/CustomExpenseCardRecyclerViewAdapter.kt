@@ -22,7 +22,7 @@ class CustomExpenseCardRecyclerViewAdapter(private val customExpenseList: List<C
             holder.customExpenseName.text = product.name
             holder.customExpenseCategory.text = product.category
             holder.customExpenseAmount.text = product.amount.toString()
-            holder.customExpenseStartDate.text = String.format("%d-%d-%d", dateCalendar.get(Calendar.YEAR), dateCalendar.get(Calendar.MONTH), dateCalendar.get(Calendar.DAY_OF_MONTH))
+            holder.customExpenseStartDate.text = String.format("%d-%d-%d", dateCalendar.get(Calendar.YEAR), dateCalendar.get(Calendar.MONTH) + 1, dateCalendar.get(Calendar.DAY_OF_MONTH))
         }
     }
 

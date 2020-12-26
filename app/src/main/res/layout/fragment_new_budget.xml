@@ -72,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient_background"
+                app:tabTextAppearance="@style/CustomTabText"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:contentInsetStart="0dp"
                 app:tabMode="fixed"
