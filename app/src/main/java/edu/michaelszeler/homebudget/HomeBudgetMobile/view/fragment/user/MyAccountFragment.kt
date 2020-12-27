@@ -15,10 +15,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.fragment_my_account.*
 import kotlinx.android.synthetic.main.fragment_my_account.view.*
@@ -76,8 +76,8 @@ class MyAccountFragment : Fragment() {
                             (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                         }
                         else {
-                            val jsonError : String? = String(networkResponse?.data!!)
-                            val answer = JSONObject(jsonError ?: "{}")
+                            val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                            val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                             if (answer.has("message")) {
                                 Log.e("Error rest data", answer.getString("message") ?: "empty")
                                 when (answer.getString("message")) {

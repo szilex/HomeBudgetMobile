@@ -55,8 +55,8 @@ class ChangePasswordFragment : Fragment() {
                             run {
                                 Log.e("Error rest response", error.toString())
                                 val networkResponse : NetworkResponse? = error?.networkResponse
-                                val jsonError : String? = String(networkResponse?.data!!)
-                                val answer = JSONObject(jsonError ?: "{}")
+                                val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                                val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                                 if (answer.has("message")) {
                                     Log.e("Error rest data", answer.getString("message") ?: "empty")
                                     when (answer.getString("message")) {

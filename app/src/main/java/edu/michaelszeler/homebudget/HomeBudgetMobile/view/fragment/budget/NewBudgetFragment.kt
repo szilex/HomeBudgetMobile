@@ -135,8 +135,8 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                             Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
                             (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                         } else {
-                            val jsonError : String? = String(networkResponse?.data!!)
-                            val answer = JSONObject(jsonError ?: "")
+                            val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                            val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                             if (answer.has("message")) {
                                 Log.e("Error rest data", answer.getString("message") ?: "")
                                 when (answer.getString("message")) {
@@ -187,8 +187,8 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                             Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
                             (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                         } else {
-                            val jsonError : String? = String(networkResponse?.data!!)
-                            val answer = JSONObject(jsonError ?: "")
+                            val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                            val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                             if (answer.has("message")) {
                                 Log.e("Error rest data", answer.getString("message") ?: "")
                                 when (answer.getString("message")) {

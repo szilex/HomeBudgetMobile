@@ -23,14 +23,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.budget.BudgetEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
+import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
+import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
+import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.current.CustomExpensesTabFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.current.GeneralTabFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.current.RegularExpensesTabFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.current.StrategiesTabFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
-import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
-import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
 import kotlinx.android.synthetic.main.fragment_current_budget.view.*
 import org.json.JSONObject
 
@@ -87,8 +87,8 @@ class CurrentBudgetFragment : Fragment() {
                     if (networkResponse?.statusCode == 401) {
                         Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
                     } else {
-                        val jsonError: String? = String(networkResponse?.data!!)
-                        val answer = JSONObject(jsonError ?: "")
+                        val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                        val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                         if (answer.has("message")) {
                             Log.e("Error rest data", answer.getString("message") ?: "")
                             when (answer.getString("message")) {

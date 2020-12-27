@@ -18,12 +18,12 @@ import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.strategy.StrategyEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.session.SessionManager
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.card.strategy.StrategyCardRecyclerViewAdapter
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.decoration.CustomGridItemDecoration
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNavigationUtility
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.card.strategy.StrategyCardRecyclerViewAdapter
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.decoration.CustomGridItemDecoration
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
 import kotlinx.android.synthetic.main.fragment_archive_strategies.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -89,8 +89,8 @@ class ArchiveStrategiesFragment : Fragment() {
                         Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
                         (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
                     } else {
-                        val jsonError : String? = String(networkResponse?.data!!)
-                        val answer = JSONObject(jsonError ?: "")
+                        val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                        val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
                         if (answer.has("message")) {
                             Log.e("Error rest data", answer.getString("message") ?: "")
                             when (answer.getString("message")) {
