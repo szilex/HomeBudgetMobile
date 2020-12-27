@@ -3,15 +3,15 @@ package edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation
 import android.view.View
 import com.google.android.material.button.MaterialButton
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.ArchiveBudgetsFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.CurrentBudgetFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.budget.NewBudgetFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.expense.CurrentRegularExpensesFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.expense.NewRegularExpenseFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.strategy.ArchiveStrategiesFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.strategy.CurrentStrategiesFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.strategy.NewStrategyFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.ui.fragment.user.MyAccountFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.ArchiveBudgetsFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.CurrentBudgetFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.NewBudgetFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.expense.CurrentRegularExpensesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.expense.NewRegularExpenseFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.strategy.ArchiveStrategiesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.strategy.CurrentStrategiesFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.strategy.NewStrategyFragment
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.user.MyAccountFragment
 
 class FragmentNavigationUtility {
     companion object {

@@ -32,7 +32,7 @@ class TextInputValidator {
         }
 
         fun isAmountValid(amount: String): Boolean {
-            return amount.isNotBlank() && amount.matches("[1-9]\\d*(\\.|,[\\d]{1,2})?".toRegex())
+            return amount.isNotBlank() && amount.matches("[1-9]\\d+(\\.[\\d]{1,2})?".toRegex())
         }
 
         fun isDateValid(date: String): Boolean {

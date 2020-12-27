@@ -15,7 +15,7 @@
         android:theme="@style/Theme.HomeBudgetMobile">
 
         <activity
-            android:name="edu.michaelszeler.homebudget.HomeBudgetMobile.ui.activity.MainActivity"
+            android:name="edu.michaelszeler.homebudget.HomeBudgetMobile.view.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

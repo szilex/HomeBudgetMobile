@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            android:padding="8dp"
             android:gravity="center_horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -32,51 +31,140 @@
                 android:textSize="30sp">
             </com.google.android.material.textview.MaterialTextView>
 
-            <!--<com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/date"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="20dp"
-                android:textColorHint="@color/white"
-                app:boxStrokeColor="@color/white"
-                app:boxStrokeWidth="2.5dp"
-                app:hintTextColor="@color/white">
+                android:id="@+id/linear_layout_new_budget_summary_tab_date"
+                android:paddingHorizontal="10dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_new_budget_general_tab_date"
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/date"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_new_budget_summary_tab_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:gravity="top"
-                    android:inputType="date"
-                    android:textColor="@color/white" />
+                    android:padding="10dp"
+                    android:text="@string/dash"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/amount"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="5dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white"
-                app:boxStrokeColor="@color/white"
-                app:boxStrokeWidth="2.5dp">
+                android:id="@+id/linear_layout_new_budget_summary_tab_income"
+                android:paddingHorizontal="10dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_dialog_custom_expense_amount"
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/income"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_new_budget_summary_tab_income"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:textColor="@color/white" />
+                    android:padding="10dp"
+                    android:text="@string/dash"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
 
-            </com.google.android.material.textfield.TextInputLayout>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_new_budget_summary_tab_custom_expenses"
+                android:paddingHorizontal="10dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/custom_expenses"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_new_budget_summary_tab_custom_expenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/dash"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_new_budget_summary_tab_regular_expenses"
+                android:paddingHorizontal="10dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/regular_expenses"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_new_budget_summary_tab_regular_expenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/dash"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_new_budget_summary_tab_strategies"
+                android:paddingHorizontal="10dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/strategies"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_new_budget_summary_tab_strategies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/dash"
+                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_new_budget_summary_tab_create"
