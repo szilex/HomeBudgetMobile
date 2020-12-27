@@ -83,23 +83,23 @@ class RegisterFragment : Fragment() {
                     view.edit_text_register_password_reenter.error = "Password does not match the original"
                 }
             } else {
-                if (TextInputValidator.isLoginValid(login)) {
+                if (!TextInputValidator.isLoginValid(login)) {
                     view.edit_text_register_login.error = "Please enter valid login"
                 }
-                if (TextInputValidator.isPasswordValid(password)) {
+                if (!TextInputValidator.isPasswordValid(password)) {
                     view.edit_text_register_password.error = "Please enter valid password"
                 }
-                if (TextInputValidator.isPasswordValid(passwordReEnter)) {
+                if (!TextInputValidator.isPasswordValid(passwordReEnter)) {
                     if (passwordReEnter.isBlank()) {
                         view.edit_text_register_password_reenter.error = "Please re-enter password"
                     } else {
                         view.edit_text_register_password_reenter.error = "Please re-enter valid password"
                     }
                 }
-                if (TextInputValidator.isNameValid(firstName)) {
+                if (!TextInputValidator.isNameValid(firstName)) {
                     view.edit_text_register_first_name.error = "Please enter first name"
                 }
-                if (TextInputValidator.isNameValid(lastName)) {
+                if (!TextInputValidator.isNameValid(lastName)) {
                     view.edit_text_register_last_name.error = "Please enter last name"
                 }
                 if (!checked) {

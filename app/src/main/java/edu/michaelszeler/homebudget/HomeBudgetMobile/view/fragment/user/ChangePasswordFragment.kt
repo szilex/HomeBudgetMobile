@@ -83,13 +83,13 @@ class ChangePasswordFragment : Fragment() {
                     view.edit_text_register_password_reenter.error = "Password does not match the original"
                 }
             } else {
-                if (TextInputValidator.isLoginValid(login)) {
+                if (!TextInputValidator.isLoginValid(login)) {
                     view.edit_text_change_password_login.error = "Please enter valid login"
                 }
-                if (TextInputValidator.isPasswordValid(password)) {
+                if (!TextInputValidator.isPasswordValid(password)) {
                     view.edit_text_change_password_password.error = "Please enter valid password"
                 }
-                if (TextInputValidator.isPasswordValid(passwordReEnter)) {
+                if (!TextInputValidator.isPasswordValid(passwordReEnter)) {
                     if (passwordReEnter.isBlank()) {
                         view.edit_text_change_password_password_reenter.error = "Please re-enter password"
                     } else {

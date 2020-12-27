@@ -28,7 +28,6 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.Navigation
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.validation.TextInputValidator
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
-import kotlinx.android.synthetic.main.fragment_new_expense.view.*
 import kotlinx.android.synthetic.main.fragment_new_strategy.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -184,22 +183,22 @@ class NewStrategyFragment : Fragment() {
                 }
                 requestQueue.add(jsonObjectRequest)
             } else {
-                if (TextInputValidator.isStrategyNameValid(name)) {
+                if (!TextInputValidator.isStrategyNameValid(name)) {
                     view.text_input_new_strategy_name.error = "Please enter valid name"
                 }
-                if (TextInputValidator.isStrategyDescriptionValid(description)) {
+                if (!TextInputValidator.isStrategyDescriptionValid(description)) {
                     view.text_input_new_strategy_description.error = "Please enter valid description"
                 }
                 if (view.spinner_new_strategy_category.text.isBlank()) {
                     view.spinner_new_strategy_category.error = "Please choose category"
                 }
-                if (TextInputValidator.isAmountValid(amount)) {
+                if (!TextInputValidator.isAmountValid(amount)) {
                     view.text_input_new_strategy_amount.error = "Please enter valid amount"
                 }
                 if (!TextInputValidator.isDateValid(startDate)) {
-                    view.edit_text_new_expense_start_date.error = "Please enter valid date"
+                    view.edit_text_new_strategy_start_date.error = "Please enter valid date"
                 }
-                if (TextInputValidator.isMonthAmountValid(months)) {
+                if (!TextInputValidator.isMonthAmountValid(months)) {
                     view.text_input_new_strategy_months.error = "Please enter valid amount of months"
                 }
             }
