@@ -19,28 +19,28 @@ import java.util.*
 class GeneralTabFragment() : Fragment() {
 
     private lateinit var parent: FragmentCallback
+    private val monthAndYearFormat = SimpleDateFormat("yyyy-MM", Locale.ENGLISH)
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+    private val calendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_new_budget_general_tab, container, false)
         val amountEditText = view.edit_text_new_budget_general_tab_amount
-        val calendar = Calendar.getInstance()
         val dateEditText = view.findViewById(R.id.edit_text_new_budget_general_tab_date) as EditText
         val date = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val myFormat = "yyyy-MM-dd"
-            val sdf = SimpleDateFormat(myFormat, Locale.ENGLISH)
-            dateEditText.setText(sdf.format(calendar.time))
+            dateEditText.setText(monthAndYearFormat.format(calendar.time))
         }
         dateEditText.setOnClickListener{
             DatePickerDialog(activity as AppCompatActivity, R.style.DialogTheme, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
         view.button_new_budget_general_tab_confirm.setOnClickListener {
-            if (TextInputValidator.isDateValid(dateEditText.text.toString()) && TextInputValidator.isAmountValid(amountEditText.text.toString())) {
+            if (TextInputValidator.isShortDateValid(dateEditText.text.toString()) && TextInputValidator.isAmountValid(amountEditText.text.toString())) {
                 val args = Bundle()
                 args.putString("tab", "general")
-                args.putString("date", dateEditText.text.toString())
+                args.putString("date", dateFormat.format(calendar.time))
                 args.putString("amount", amountEditText.text.toString())
                 parent.callback(args)
             } else {

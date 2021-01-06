@@ -39,6 +39,10 @@ class TextInputValidator {
             return date.isNotBlank() && date.matches("\\d{4}-\\d{2}-\\d{1,2}".toRegex())
         }
 
+        fun isShortDateValid(date: String): Boolean {
+            return date.isNotBlank() && date.matches("\\d{4}-\\d{2}".toRegex())
+        }
+
         fun isMonthAmountValid(amount: String): Boolean {
             return amount.isNotBlank() && amount.matches("[1-9](\\d)*".toRegex())
         }

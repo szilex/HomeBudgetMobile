@@ -22,7 +22,6 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import edu.michaelszeler.homebudget.mobile.R
-import edu.michaelszeler.homebudget.mobile.model.budget.BudgetEntry
 import edu.michaelszeler.homebudget.mobile.model.expense.CustomExpenseEntry
 import edu.michaelszeler.homebudget.mobile.model.expense.RegularExpenseEntry
 import edu.michaelszeler.homebudget.mobile.model.strategy.StrategyEntry
@@ -44,27 +43,22 @@ import kotlin.collections.HashMap
 class NewBudgetFragment : Fragment(), FragmentCallback {
 
     private lateinit var sessionManager : SessionManager
-    private lateinit var budget : BudgetEntry
 
     private lateinit var pagerAdapter: FragmentStateAdapter
     private val titles = arrayOf("General", "Custom expense", "Regular expense", "Strategy", "Summary")
-    private var previousPage = 0
 
-    @Volatile private lateinit var date: Date
-    @Volatile private lateinit var income: BigDecimal
+    @Volatile private  var date: Date = Date(0)
+    @Volatile private  var income: BigDecimal = BigDecimal.ZERO
     @Volatile private lateinit var expenseCategories: List<String>
     @Volatile private var customExpenses: MutableList<CustomExpenseEntry> = mutableListOf()
     @Volatile private var regularExpenses: MutableList<RegularExpenseEntry> = mutableListOf()
     @Volatile private var strategies: MutableList<StrategyEntry> = mutableListOf()
 
     private var isExpenseCategoriesInitialized = false
-    private var isCustomExpensesInitialized = false
     private var isRegularExpensesInitialized = false
     private var isStrategiesInitialized = false
 
     private var requestError = false
-
-    private lateinit var summaryTab: SummaryTabFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,7 +115,8 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                     response: JSONArray? ->
                     run {
                         Log.e("Rest Response", response.toString())
-                        regularExpenses = RegularExpenseEntry.convertToRegularExpenseList(response.toString()).toMutableList()
+                        val regularExpenseList = RegularExpenseEntry.convertToRegularExpenseList(response.toString()).toMutableList()
+                        if (regularExpenseList.isNotEmpty()) regularExpenses = regularExpenseList.toMutableList()
                         isRegularExpensesInitialized = true
                     }
                 },
@@ -173,7 +168,8 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                     response: JSONArray? ->
                     run {
                         Log.e("Rest Response", response.toString())
-                        strategies = StrategyEntry.convertToStrategyList(response.toString()).toMutableList()
+                        val strategyList = StrategyEntry.convertToStrategyList(response.toString()).toMutableList()
+                        if (strategyList.isNotEmpty())  strategies =  strategyList.toMutableList()
                         isStrategiesInitialized = true
                     }
                 },
@@ -225,23 +221,21 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
         handler.postDelayed( {
             while (!requestError) {
                 if (isExpenseCategoriesInitialized && isRegularExpensesInitialized && isStrategiesInitialized) {
-                    //customExpenses = arrayListOf()
+/*
                     summaryTab = SummaryTabFragment()
                     summaryTab.setCustomExpenses(customExpenses)
                     summaryTab.setRegularExpenses(regularExpenses)
-                    summaryTab.setStrategies(strategies)
-                    viewPager = view.findViewById(R.id.view_pager_new_budget)
-                    pagerAdapter = BudgetPagerAdapter(activity)
-                    viewPager!!.adapter = pagerAdapter
-                    val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout_new_budget)
-                    TabLayoutMediator(tabLayout, viewPager!!) { tab: TabLayout.Tab, position: Int -> tab.text = titles[position] }.attach()
-
-                    Thread.sleep(500)
-                    view.findViewById<RelativeLayout>(R.id.loading_panel_new_budget).visibility = View.GONE
+                    summaryTab.setStrategies(strategies)*/
                     break
                 }
                 Thread.sleep(100)
             }
+            viewPager = view.findViewById(R.id.view_pager_new_budget)
+            pagerAdapter = BudgetPagerAdapter(activity)
+            viewPager!!.adapter = pagerAdapter
+            val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout_new_budget)
+            TabLayoutMediator(tabLayout, viewPager!!) { tab: TabLayout.Tab, position: Int -> tab.text = titles[position] }.attach()
+            view.findViewById<RelativeLayout>(R.id.loading_panel_new_budget).visibility = View.GONE
         }, 1000)
 
         view.toolbar_new_budget.setNavigationOnClickListener(NavigationIconClickListener(activity!!, view.relative_layout_new_budget, AccelerateDecelerateInterpolator(), ContextCompat.getDrawable(context!!, R.drawable.menu_icon), ContextCompat.getDrawable(context!!, R.drawable.menu_icon)))
@@ -274,16 +268,24 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                     val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
                     date = simpleDateFormat.parse(args.getString("date")!!, position)!!
                     income = BigDecimal(args.getString("amount"))
-                    summaryTab.setDate(date)
-                    summaryTab.setIncome(income)
+                    val summaryFragmentList: List<Fragment>? = fragmentManager?.fragments?.filter { fragment -> fragment.toString().contains("SummaryTabFragment") }
+                    if (summaryFragmentList?.size == 1) {
+                        val summaryFragment = summaryFragmentList[0]
+                        (summaryFragment as SummaryTabFragment).setDate(date)
+                        summaryFragment.setIncome(income)
+                    }
                 }
                 "custom expenses" -> {
                     val position = ParsePosition(0)
                     val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
                     val expenseDate =  simpleDateFormat.parse(args.getString("date")!!, position)!!
                     val expense = CustomExpenseEntry(args.getString("name")!!, args.getString("category")!!, BigDecimal(args.getString("amount")), expenseDate)
-                    customExpenses.add(0, expense) /* = args.getSerializable("data") as ArrayList<CustomExpenseEntry>*/
-                    summaryTab.setCustomExpenses(customExpenses)
+                    customExpenses.add(0, expense)
+                    val summaryFragmentList: List<Fragment>? = fragmentManager?.fragments?.filter { fragment -> fragment.toString().contains("SummaryTabFragment") }
+                    if (summaryFragmentList?.size == 1) {
+                        val summaryFragment = summaryFragmentList[0]
+                        (summaryFragment as SummaryTabFragment).setCustomExpenses(customExpenses)
+                    }
                 }
             }
         }
@@ -310,7 +312,7 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
                     StrategiesTabFragment(strategies)
                 }
                 4 -> {
-                    summaryTab
+                    SummaryTabFragment(date, income, customExpenses, regularExpenses, strategies)
                 }
                 else -> Fragment()
             }
@@ -319,7 +321,6 @@ class NewBudgetFragment : Fragment(), FragmentCallback {
         override fun getItemCount(): Int {
             return PAGES
         }
-
 
     }
 

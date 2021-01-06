@@ -26,15 +26,9 @@ import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SummaryTabFragment() : Fragment() {
+class SummaryTabFragment(private var date: Date, private var income: BigDecimal, private var customExpenses: MutableList<CustomExpenseEntry>, private var regularExpenses: MutableList<RegularExpenseEntry>, private var strategies: MutableList<StrategyEntry>) : Fragment() {
 
     private lateinit var sessionManager : SessionManager
-
-    private var date: Date? = null
-    private var income: BigDecimal? = null
-    private var customExpenses: MutableList<CustomExpenseEntry> = mutableListOf()
-    private var regularExpenses: MutableList<RegularExpenseEntry> = mutableListOf()
-    private var strategies: MutableList<StrategyEntry> = mutableListOf()
 
     private var dateChanged = false
     private var incomeChanged = false
@@ -47,11 +41,11 @@ class SummaryTabFragment() : Fragment() {
         sessionManager = SessionManager(activity)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view: View = inflater.inflate(R.layout.fragment_new_budget_summary_tab, container, false)
 
-        view.text_view_new_budget_summary_tab_date.text = if (date == null) "-" else getDateString()
-        view.text_view_new_budget_summary_tab_income.text = if (income == null) "-" else String.format("%10.2f", income)
+        view.text_view_new_budget_summary_tab_date.text = if (date.time == 0L) "-" else getDateString()
+        view.text_view_new_budget_summary_tab_income.text = if (income.compareTo(BigDecimal.ZERO) == 0) "-" else String.format("%10.2f", income)
         view.text_view_new_budget_summary_tab_custom_expenses.text = if (customExpenses.isEmpty()) "-" else String.format("%10.2f", customExpenses.stream().map { x -> x.amount }.reduce(BigDecimal.ZERO, BigDecimal::add))
         view.text_view_new_budget_summary_tab_regular_expenses.text = if (regularExpenses.isEmpty()) "-" else String.format("%10.2f", regularExpenses.stream().map { x -> x.amount }.reduce(BigDecimal.ZERO, BigDecimal::add))
         view.text_view_new_budget_summary_tab_strategies.text = if (strategies.isEmpty()) "-" else String.format("%10.2f", strategies.stream().map { x -> x.goal }.reduce(BigDecimal.ZERO, BigDecimal::add))
@@ -62,7 +56,7 @@ class SummaryTabFragment() : Fragment() {
                 val token = sessionManager.getToken()!!
                 val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
 
-                val budget = BudgetEntry(0, date!!, income!!, customExpenses, regularExpenses, strategies)
+                val budget = BudgetEntry(0, date, income, customExpenses, regularExpenses, strategies)
 
                 val jsonContent = convertToJsonString(budget)
 
@@ -124,11 +118,11 @@ class SummaryTabFragment() : Fragment() {
     override fun onResume() {
         super.onResume()
         if (dateChanged) {
-            view?.text_view_new_budget_summary_tab_date?.text = if (date == null) "-" else getDateString()
+            view?.text_view_new_budget_summary_tab_date?.text = if (date.time == 0L) "-" else getDateString()
             dateChanged = false
         }
         if (incomeChanged) {
-            view?.text_view_new_budget_summary_tab_income?.text = if (income == null) "-" else String.format("%10.2f", income)
+            view?.text_view_new_budget_summary_tab_income?.text = if (income.compareTo(BigDecimal.ZERO) == 0) "-" else String.format("%10.2f", income)
             incomeChanged = false
         }
         if (customExpensesChanged) {
@@ -149,15 +143,15 @@ class SummaryTabFragment() : Fragment() {
     private fun getDateString(): String {
         val calendar = Calendar.getInstance()
         calendar.time = date
-        return String.format("%d-%d-%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+        return String.format("%d-%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1)
     }
 
-    fun setDate(date: Date?) {
+    fun setDate(date: Date) {
         this.date = date
         dateChanged = true
     }
 
-    fun setIncome(income: BigDecimal?) {
+    fun setIncome(income: BigDecimal) {
         this.income = income
         incomeChanged = true
     }
@@ -184,42 +178,36 @@ class SummaryTabFragment() : Fragment() {
         stringBuilder.append("\"date\": \"").append(SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(budget.date)).append("\",")
         stringBuilder.append("\"customExpenses\": [")
 
-        if (customExpenses != null) {
-            val customExpenseIterator = budget.customExpenses.iterator()
-            while (customExpenseIterator.hasNext()) {
-                val expense = customExpenseIterator.next()
-                stringBuilder.append("{\"category\": \"").append(expense.category).append("\",")
-                stringBuilder.append("\"name\": \"").append(expense.name).append("\",")
-                stringBuilder.append(String.format("\"amount\": %10.2f,", expense.amount))
-                stringBuilder.append("\"date\": \"").append(SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(expense.date)).append("\",")
-                stringBuilder.append("\"months\": 1}")
-                if (customExpenseIterator.hasNext()) {
-                    stringBuilder.append(",")
-                }
+        val customExpenseIterator = budget.customExpenses.iterator()
+        while (customExpenseIterator.hasNext()) {
+            val expense = customExpenseIterator.next()
+            stringBuilder.append("{\"category\": \"").append(expense.category).append("\",")
+            stringBuilder.append("\"name\": \"").append(expense.name).append("\",")
+            stringBuilder.append(String.format("\"amount\": %10.2f,", expense.amount))
+            stringBuilder.append("\"date\": \"").append(SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(expense.date)).append("\",")
+            stringBuilder.append("\"months\": 1}")
+            if (customExpenseIterator.hasNext()) {
+                stringBuilder.append(",")
             }
         }
         stringBuilder.append("],\"regularExpenses\":[")
 
-        if (regularExpenses != null) {
-            val regularExpenseIterator = budget.regularExpenses.iterator()
-            while (regularExpenseIterator.hasNext()) {
-                val expense = regularExpenseIterator.next()
-                stringBuilder.append(String.format("{\"id\": %d}", expense.id))
-                if (regularExpenseIterator.hasNext()) {
-                    stringBuilder.append(",")
-                }
+        val regularExpenseIterator = budget.regularExpenses.iterator()
+        while (regularExpenseIterator.hasNext()) {
+            val expense = regularExpenseIterator.next()
+            stringBuilder.append(String.format("{\"id\": %d}", expense.id))
+            if (regularExpenseIterator.hasNext()) {
+                stringBuilder.append(",")
             }
         }
         stringBuilder.append("],\"strategies\":[")
 
-        if (strategies != null) {
-            val strategyIterator = budget.strategies.iterator()
-            while (strategyIterator.hasNext()) {
-                val strategy = strategyIterator.next()
-                stringBuilder.append(String.format("{\"id\": %d}", strategy.id))
-                if (strategyIterator.hasNext()) {
-                    stringBuilder.append(",")
-                }
+        val strategyIterator = budget.strategies.iterator()
+        while (strategyIterator.hasNext()) {
+            val strategy = strategyIterator.next()
+            stringBuilder.append(String.format("{\"id\": %d}", strategy.id))
+            if (strategyIterator.hasNext()) {
+                stringBuilder.append(",")
             }
         }
         stringBuilder.append("]}")
@@ -228,6 +216,6 @@ class SummaryTabFragment() : Fragment() {
     }
 
     private fun isArgumentListSet() : Boolean {
-        return date != null && income != null && customExpenses != null && regularExpenses != null && strategies != null
+        return date.time != 0L && income.compareTo(BigDecimal.ZERO) != 0
     }
 }
