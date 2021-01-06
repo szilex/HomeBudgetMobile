@@ -16,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.validation.TextInputValidator
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.created.FragmentCallback
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.creator.FragmentCallback
 import kotlinx.android.synthetic.main.dialog_custom_expense.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CustomExpenseDialog : DialogFragment() {
+class CustomExpenseDialogFragment : DialogFragment() {
 
     companion object {
 
@@ -36,10 +36,10 @@ class CustomExpenseDialog : DialogFragment() {
         private const val KEY_DATE = "date"
         private const val KEY_CATEGORIES = "categories"
 
-        fun newInstance(categories : List<String>): CustomExpenseDialog {
+        fun newInstance(categories : List<String>): CustomExpenseDialogFragment {
             val args = Bundle()
             args.putStringArrayList(KEY_CATEGORIES, ArrayList(categories))
-            val dialog = CustomExpenseDialog()
+            val dialog = CustomExpenseDialogFragment()
             dialog.arguments = args
             dialog.onSaveInstanceState(args)
             return dialog

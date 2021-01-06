@@ -31,7 +31,7 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.FragmentNa
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationHost
 import edu.michaelszeler.homebudget.HomeBudgetMobile.utils.navigation.NavigationIconClickListener
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.MainMenuFragment
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.created.*
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.creator.*
 import kotlinx.android.synthetic.main.fragment_new_budget.view.*
 import org.json.JSONArray
 import org.json.JSONObject

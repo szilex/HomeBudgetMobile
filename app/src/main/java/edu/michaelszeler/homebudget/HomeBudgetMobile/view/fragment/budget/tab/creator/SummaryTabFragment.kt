@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.created
+package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.creator
 
 import android.os.Bundle
 import android.util.Log

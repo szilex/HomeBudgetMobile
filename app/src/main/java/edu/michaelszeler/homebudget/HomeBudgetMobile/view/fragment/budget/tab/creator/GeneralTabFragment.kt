@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.created
+package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.creator
 
 import android.app.DatePickerDialog
 import android.os.Bundle

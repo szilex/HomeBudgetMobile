@@ -1,4 +1,4 @@
-package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.created
+package edu.michaelszeler.homebudget.HomeBudgetMobile.view.fragment.budget.tab.creator
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import edu.michaelszeler.homebudget.HomeBudgetMobile.R
 import edu.michaelszeler.homebudget.HomeBudgetMobile.model.expense.CustomExpenseEntry
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.card.expense.CustomExpenseCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.HomeBudgetMobile.view.decoration.CustomGridItemDecoration
-import edu.michaelszeler.homebudget.HomeBudgetMobile.view.dialog.CustomExpenseDialog
+import edu.michaelszeler.homebudget.HomeBudgetMobile.view.dialog.CustomExpenseDialogFragment
 import kotlinx.android.synthetic.main.fragment_new_budget_custom_expenses_tab.view.*
 import java.math.BigDecimal
 import java.text.ParsePosition
@@ -44,9 +44,9 @@ class CustomExpensesTabFragment(private val categories : List<String> ,private v
         view.recycler_view_new_budget_custom_expenses_tab.addItemDecoration(CustomGridItemDecoration(largePadding, smallPadding))
 
         view.button_new_budget_custom_expense_tab_add.setOnClickListener {
-            val dialog = CustomExpenseDialog.newInstance(categories)
+            val dialog = CustomExpenseDialogFragment.newInstance(categories)
             dialog.setTargetFragment(this, 0)
-            dialog.show(fragmentManager!!, CustomExpenseDialog.NAME)
+            dialog.show(fragmentManager!!, CustomExpenseDialogFragment.NAME)
         }
 
         return view
