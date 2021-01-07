@@ -31,13 +31,13 @@ class RegularExpenseCardRecyclerViewAdapter(private val regularExpenseList: List
             startCalendar.time = product.startDate
             holder.regularExpenseName.text = product.name
             holder.regularExpenseCategory.text = product.category
-            holder.regularExpenseAmount.text = product.amount.toString()
+            holder.regularExpenseAmount.text = String.format("%10.2f", product.amount)
             holder.regularExpenseStartDate.text = String.format("%d-%d-%d", startCalendar.get(Calendar.YEAR), startCalendar.get(Calendar.MONTH) + 1, startCalendar.get(Calendar.DAY_OF_MONTH))
             holder.regularExpenseMonths.text = product.months.toString()
-            holder.regularExpenseButton.setOnClickListener(ShowRegularExpenseChartOnClickListener(fragmentManager!!, product.amount.toDouble(), product.months, calculateCurrentMonth(startCalendar)))
+            holder.regularExpenseShowChartButton.setOnClickListener(ShowRegularExpenseChartOnClickListener(fragmentManager!!, product.amount.toDouble(), product.months, calculateCurrentMonth(startCalendar)))
             if (this::deleteRegularExpenseOnClickListener.isInitialized) {
                 holder.regularExpenseDeleteButton.setOnClickListener {
-                    deleteRegularExpenseOnClickListener.setRegularExpense(regularExpenseList[position])
+                    deleteRegularExpenseOnClickListener.setRegularExpense(product)
                     deleteRegularExpenseOnClickListener.onClick(it)
                 }
             } else {

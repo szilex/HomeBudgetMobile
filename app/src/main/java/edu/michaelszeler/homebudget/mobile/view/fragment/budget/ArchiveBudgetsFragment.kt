@@ -14,6 +14,7 @@ import com.android.volley.NetworkResponse
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.mobile.R
 import edu.michaelszeler.homebudget.mobile.model.budget.BudgetEntry
@@ -25,13 +26,19 @@ import edu.michaelszeler.homebudget.mobile.utils.navigation.NavigationIconClickL
 import edu.michaelszeler.homebudget.mobile.view.card.budget.BudgetSummaryCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.mobile.view.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.mobile.view.fragment.MainMenuFragment
+import edu.michaelszeler.homebudget.mobile.view.listener.DeleteBudgetOnClickListener
 import kotlinx.android.synthetic.main.fragment_archive_budgets.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-class ArchiveBudgetsFragment : Fragment() {
+class ArchiveBudgetsFragment : Fragment(), DeleteBudgetOnClickListener {
 
     private lateinit var sessionManager: SessionManager
+    private lateinit var adapter: BudgetSummaryCardRecyclerViewAdapter
+    private lateinit var budgetSummaryEntryList: MutableList<BudgetSummaryEntry>
+    private lateinit var requestQueue: RequestQueue
+
+    private var budgetToDelete: BudgetSummaryEntry? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +61,7 @@ class ArchiveBudgetsFragment : Fragment() {
         )
 
         val token = sessionManager.getToken()!!
-        val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
+        requestQueue  = Volley.newRequestQueue(activity)
 
         val jsonArrayRequest = object: JsonArrayRequest(
                 Method.GET,
@@ -69,8 +76,9 @@ class ArchiveBudgetsFragment : Fragment() {
                         val gridLayoutManager = GridLayoutManager(context, 1, RecyclerView.VERTICAL, false)
 
                         view.recycler_view_archive_budgets.layoutManager = gridLayoutManager
-                        val adapter = BudgetSummaryCardRecyclerViewAdapter(BudgetSummaryEntry.convertToBudgetSummaryList(BudgetEntry.convertToBudgetList(response.toString()))!!, fragmentManager)
-
+                        budgetSummaryEntryList = BudgetSummaryEntry.convertToBudgetSummaryList(BudgetEntry.convertToBudgetList(response.toString())).toMutableList()
+                        adapter = BudgetSummaryCardRecyclerViewAdapter(budgetSummaryEntryList, fragmentManager)
+                        adapter.setDeleteBudgetOnClickListener(this)
                         view.recycler_view_archive_budgets.adapter = adapter
 
                         val largePadding = resources.getDimensionPixelSize(R.dimen.strategy_grid_spacing)
@@ -124,6 +132,71 @@ class ArchiveBudgetsFragment : Fragment() {
         FragmentNavigationUtility.setUpMenuButtons((activity as NavigationHost), view)
 
         return view
+    }
+
+    override fun setBudget(budget: BudgetSummaryEntry) {
+        this.budgetToDelete = budget
+    }
+
+    override fun onClick(v: View?) {
+        if (this.budgetToDelete != null) {
+            val token = sessionManager.getToken()!!
+            val jsonObjectRequest = object: JsonObjectRequest(
+                    Method.DELETE,
+                    String.format("http://10.0.2.2:8080/budget?id=%d", this.budgetToDelete!!.id),
+                    null,
+                    {
+                        response: JSONObject? ->
+                        run {
+                            Log.e("Rest Response", response.toString())
+                            budgetSummaryEntryList.removeAt(budgetSummaryEntryList.indexOf(this.budgetToDelete!!))
+                            adapter.notifyDataSetChanged()
+                            budgetToDelete = null
+                            Toast.makeText(activity, "Budget deleted!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    {
+                        error: VolleyError? ->
+                        run {
+                            Log.e("Error rest response", error.toString())
+                            val networkResponse : NetworkResponse? = error?.networkResponse
+                            if (networkResponse?.statusCode == 401) {
+                                Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
+                            } else {
+                                val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                                val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
+                                if (answer.has("message")) {
+                                    Log.e("Error rest data", answer.getString("message") ?: "")
+                                    when (answer.getString("message")) {
+                                        "Budget id not specified" -> {
+                                            Toast.makeText(activity, "Could not delete strategy", Toast.LENGTH_SHORT).show()
+                                        }
+                                        "Budget not found" -> {
+                                            Toast.makeText(activity, "Strategy has not been found", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else -> {
+                                            Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Authorization"] = token
+                    //headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
+            requestQueue.add(jsonObjectRequest)
+        } else {
+            Toast.makeText(activity, "Cannot delete budget", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

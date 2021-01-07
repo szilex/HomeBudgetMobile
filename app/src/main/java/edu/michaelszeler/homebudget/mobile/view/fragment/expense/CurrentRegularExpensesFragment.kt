@@ -33,10 +33,11 @@ import org.json.JSONObject
 class CurrentRegularExpensesFragment : Fragment(), DeleteRegularExpenseOnClickListener {
 
     private lateinit var sessionManager: SessionManager
-    private lateinit var regularExpenseToDelete: RegularExpenseEntry
     private lateinit var adapter: RegularExpenseCardRecyclerViewAdapter
     private lateinit var regularExpenseEntryList: MutableList<RegularExpenseEntry>
     private lateinit var requestQueue: RequestQueue
+
+    private var regularExpenseToDelete: RegularExpenseEntry? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,17 +138,17 @@ class CurrentRegularExpensesFragment : Fragment(), DeleteRegularExpenseOnClickLi
     }
 
     override fun onClick(v: View?) {
-        if (this::regularExpenseToDelete.isInitialized) {
+        if (this.regularExpenseToDelete != null) {
             val token = sessionManager.getToken()!!
             val jsonObjectRequest = object: JsonObjectRequest(
                     Method.DELETE,
-                    String.format("http://10.0.2.2:8080/expense?id=%d", regularExpenseToDelete.id),
+                    String.format("http://10.0.2.2:8080/expense?id=%d", this.regularExpenseToDelete!!.id),
                     null,
                     {
                         response: JSONObject? ->
                         run {
                             Log.e("Rest Response", response.toString())
-                            regularExpenseEntryList.removeAt(regularExpenseEntryList.indexOf(regularExpenseToDelete))
+                            regularExpenseEntryList.removeAt(regularExpenseEntryList.indexOf(this.regularExpenseToDelete!!))
                             adapter.notifyDataSetChanged()
                             Toast.makeText(activity, "Expense deleted!", Toast.LENGTH_SHORT).show()
                         }
@@ -186,7 +187,7 @@ class CurrentRegularExpensesFragment : Fragment(), DeleteRegularExpenseOnClickLi
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     headers["Authorization"] = token
-                    headers["Content-Type"] = "application/json"
+                    //headers["Content-Type"] = "application/json"
                     return headers
                 }
             }

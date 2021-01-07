@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 class BudgetSummaryEntry(val id: Int, val date: Date, val income: BigDecimal, val customExpenses: BigDecimal, val regularExpenses: BigDecimal, val strategies: BigDecimal) {
 
     companion object {
-        fun convertToBudgetSummaryList(budgets: List<BudgetEntry>) : List<BudgetSummaryEntry>? {
+        fun convertToBudgetSummaryList(budgets: List<BudgetEntry>) : List<BudgetSummaryEntry> {
             return budgets.stream()
                     .map { budget ->  BudgetSummaryEntry(budget.id, budget.date, budget.income, budget.customExpenses.sumCustomExpenses(), budget.regularExpenses.sumRegularExpenses(), budget.strategies.sumStrategies()) }
                     .collect(Collectors.toList())

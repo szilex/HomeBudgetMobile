@@ -14,6 +14,7 @@ import com.android.volley.NetworkResponse
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.michaelszeler.homebudget.mobile.R
 import edu.michaelszeler.homebudget.mobile.model.strategy.StrategyEntry
@@ -24,13 +25,19 @@ import edu.michaelszeler.homebudget.mobile.utils.navigation.NavigationIconClickL
 import edu.michaelszeler.homebudget.mobile.view.card.strategy.StrategyCardRecyclerViewAdapter
 import edu.michaelszeler.homebudget.mobile.view.decoration.CustomGridItemDecoration
 import edu.michaelszeler.homebudget.mobile.view.fragment.MainMenuFragment
+import edu.michaelszeler.homebudget.mobile.view.listener.DeleteStrategyOnClickListener
 import kotlinx.android.synthetic.main.fragment_archive_strategies.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-class ArchiveStrategiesFragment : Fragment() {
+class ArchiveStrategiesFragment : Fragment(), DeleteStrategyOnClickListener {
 
     private lateinit var sessionManager: SessionManager
+    private lateinit var adapter: StrategyCardRecyclerViewAdapter
+    private lateinit var strategyEntryList: MutableList<StrategyEntry>
+    private lateinit var requestQueue: RequestQueue
+
+    private var strategyToDelete: StrategyEntry? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +60,7 @@ class ArchiveStrategiesFragment : Fragment() {
         )
 
         val token = sessionManager.getToken()!!
-        val requestQueue : RequestQueue = Volley.newRequestQueue(activity)
+        requestQueue = Volley.newRequestQueue(activity)
 
         val jsonArrayRequest = object: JsonArrayRequest(
             Method.GET,
@@ -68,8 +75,9 @@ class ArchiveStrategiesFragment : Fragment() {
                     val gridLayoutManager = GridLayoutManager(context, 1, RecyclerView.VERTICAL, false)
 
                     view.recycler_view_archive_strategies.layoutManager = gridLayoutManager
-                    val adapter = StrategyCardRecyclerViewAdapter(StrategyEntry.convertToStrategyList(response.toString()), fragmentManager)
-
+                    strategyEntryList = StrategyEntry.convertToStrategyList(response.toString()).toMutableList()
+                    adapter = StrategyCardRecyclerViewAdapter(strategyEntryList, fragmentManager)
+                    adapter.setDeleteStrategyOnClickListener(this)
                     view.recycler_view_archive_strategies.adapter = adapter
 
                     val largePadding = resources.getDimensionPixelSize(R.dimen.strategy_grid_spacing)
@@ -123,6 +131,70 @@ class ArchiveStrategiesFragment : Fragment() {
         FragmentNavigationUtility.setUpMenuButtons((activity as NavigationHost), view)
 
         return view
+    }
+
+    override fun setStrategy(strategy: StrategyEntry) {
+        this.strategyToDelete = strategy
+    }
+
+    override fun onClick(v: View?) {
+        if (this.strategyToDelete != null) {
+            val token = sessionManager.getToken()!!
+            val jsonObjectRequest = object: JsonObjectRequest(
+                    Method.DELETE,
+                    String.format("http://10.0.2.2:8080/strategy?id=%d", this.strategyToDelete!!.id),
+                    null,
+                    {
+                        response: JSONObject? ->
+                        run {
+                            Log.e("Rest Response", response.toString())
+                            strategyEntryList.removeAt(strategyEntryList.indexOf(this.strategyToDelete!!))
+                            adapter.notifyDataSetChanged()
+                            Toast.makeText(activity, "Strategy deleted!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    {
+                        error: VolleyError? ->
+                        run {
+                            Log.e("Error rest response", error.toString())
+                            val networkResponse : NetworkResponse? = error?.networkResponse
+                            if (networkResponse?.statusCode == 401) {
+                                Toast.makeText(activity, "Authentication error", Toast.LENGTH_SHORT).show()
+                                (activity as NavigationHost).navigateTo(MainMenuFragment(), false)
+                            } else {
+                                val responseData = String(networkResponse?.data ?: "{}".toByteArray())
+                                val answer = JSONObject(if (responseData.isBlank()) "{}" else responseData)
+                                if (answer.has("message")) {
+                                    Log.e("Error rest data", answer.getString("message") ?: "")
+                                    when (answer.getString("message")) {
+                                        "Strategy id not specified" -> {
+                                            Toast.makeText(activity, "Could not delete strategy", Toast.LENGTH_SHORT).show()
+                                        }
+                                        "Strategy not found" -> {
+                                            Toast.makeText(activity, "Strategy has not been found", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else -> {
+                                            Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(activity, "Unknown server error", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Authorization"] = token
+                    //headers["Content-Type"] = "application/json"
+                    return headers
+                }
+            }
+            requestQueue.add(jsonObjectRequest)
+        } else {
+            Toast.makeText(activity, "Cannot delete strategy", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

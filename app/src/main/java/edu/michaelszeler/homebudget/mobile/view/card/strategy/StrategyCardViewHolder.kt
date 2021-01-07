@@ -13,6 +13,6 @@ class StrategyCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     var strategyGoal: MaterialTextView = itemView.findViewById(R.id.text_view_strategy_card_goal)
     var strategyStartDate: MaterialTextView = itemView.findViewById(R.id.text_view_strategy_card_start_date)
     var strategyMonths: MaterialTextView = itemView.findViewById(R.id.text_view_strategy_card_months)
-    var strategyButton: MaterialButton = itemView.findViewById(R.id.button_strategy_card)
+    var strategyShowChartButton: MaterialButton = itemView.findViewById(R.id.button_strategy_card)
     var strategyDeleteButton: MaterialButton = itemView.findViewById(R.id.button_strategy_card_delete)
 }

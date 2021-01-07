@@ -12,6 +12,6 @@ class RegularExpenseCardViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
     var regularExpenseAmount: MaterialTextView = itemView.findViewById(R.id.text_view_regular_expense_card_amount)
     var regularExpenseStartDate: MaterialTextView = itemView.findViewById(R.id.text_view_regular_expense_card_start_date)
     var regularExpenseMonths: MaterialTextView = itemView.findViewById(R.id.text_view_regular_expense_card_months)
-    var regularExpenseButton: MaterialButton = itemView.findViewById(R.id.button_regular_expense_card)
+    var regularExpenseShowChartButton: MaterialButton = itemView.findViewById(R.id.button_regular_expense_card)
     var regularExpenseDeleteButton: MaterialButton = itemView.findViewById(R.id.button_regular_expense_card_delete)
 }

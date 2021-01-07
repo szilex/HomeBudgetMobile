@@ -12,5 +12,6 @@ class BudgetSummaryCardViewHolder(itemView: View) : RecyclerView.ViewHolder(item
     var budgetCustomExpenses: MaterialTextView = itemView.findViewById(R.id.text_view_budget_summary_card_custom_expenses)
     var budgetRegularExpenses: MaterialTextView = itemView.findViewById(R.id.text_view_budget_summary_card_regular_expenses)
     var budgetStrategies: MaterialTextView = itemView.findViewById(R.id.text_view_budget_summary_card_strategies)
-    var budgetButton: MaterialButton = itemView.findViewById(R.id.button_budget_summary_card)
+    var budgetShowChartButton: MaterialButton = itemView.findViewById(R.id.button_budget_summary_card)
+    var budgetDeleteButton: MaterialButton = itemView.findViewById(R.id.button_budget_summary_card_delete)
 }

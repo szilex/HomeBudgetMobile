@@ -1,15 +1,23 @@
 package edu.michaelszeler.homebudget.mobile.view.card.budget
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.michaelszeler.homebudget.mobile.R
 import edu.michaelszeler.homebudget.mobile.model.budget.BudgetSummaryEntry
+import edu.michaelszeler.homebudget.mobile.view.listener.DeleteBudgetOnClickListener
 import edu.michaelszeler.homebudget.mobile.view.listener.ShowBudgetSummaryChartOnClickListener
 import java.util.*
 
 class BudgetSummaryCardRecyclerViewAdapter(private val budgetList: List<BudgetSummaryEntry>, private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<BudgetSummaryCardViewHolder>() {
+
+    private lateinit var deleteBudgetOnClickListener: DeleteBudgetOnClickListener
+
+    fun setDeleteBudgetOnClickListener (listener: DeleteBudgetOnClickListener) {
+        this.deleteBudgetOnClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetSummaryCardViewHolder {
         val layoutView = LayoutInflater.from(parent.context).inflate(R.layout.card_budget_summary, parent, false)
@@ -26,7 +34,15 @@ class BudgetSummaryCardRecyclerViewAdapter(private val budgetList: List<BudgetSu
             holder.budgetCustomExpenses.text = String.format("%10.2f", product.customExpenses)
             holder.budgetRegularExpenses.text = String.format("%10.2f", product.regularExpenses)
             holder.budgetStrategies.text = String.format("%10.2f", product.strategies)
-            holder.budgetButton.setOnClickListener(ShowBudgetSummaryChartOnClickListener(fragmentManager!!, product))
+            holder.budgetShowChartButton.setOnClickListener(ShowBudgetSummaryChartOnClickListener(fragmentManager!!, product))
+            if (this::deleteBudgetOnClickListener.isInitialized) {
+                holder.budgetDeleteButton.setOnClickListener {
+                    deleteBudgetOnClickListener.setBudget(product)
+                    deleteBudgetOnClickListener.onClick(it)
+                }
+            } else {
+                holder.budgetDeleteButton.visibility = View.GONE
+            }
         }
     }
 

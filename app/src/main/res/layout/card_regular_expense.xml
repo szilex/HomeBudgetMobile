@@ -30,8 +30,8 @@
                 android:text="@string/regular_expense"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:layout_gravity="center">
-            </com.google.android.material.textview.MaterialTextView>
+                android:layout_gravity="center"/>
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_regular_expense_card_delete"

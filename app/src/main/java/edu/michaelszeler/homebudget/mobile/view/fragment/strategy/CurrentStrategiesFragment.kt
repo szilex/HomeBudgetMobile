@@ -33,10 +33,11 @@ import org.json.JSONObject
 class CurrentStrategiesFragment : Fragment(), DeleteStrategyOnClickListener {
 
     private lateinit var sessionManager: SessionManager
-    private lateinit var strategyToDelete: StrategyEntry
     private lateinit var adapter: StrategyCardRecyclerViewAdapter
     private lateinit var strategyEntryList: MutableList<StrategyEntry>
     private lateinit var requestQueue: RequestQueue
+
+    private var strategyToDelete: StrategyEntry? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,18 +138,19 @@ class CurrentStrategiesFragment : Fragment(), DeleteStrategyOnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (this::strategyToDelete.isInitialized) {
+        if (this.strategyToDelete != null) {
             val token = sessionManager.getToken()!!
             val jsonObjectRequest = object: JsonObjectRequest(
                     Method.DELETE,
-                    String.format("http://10.0.2.2:8080/strategy?id=%d", strategyToDelete.id),
+                    String.format("http://10.0.2.2:8080/strategy?id=%d", this.strategyToDelete!!.id),
                     null,
                     {
                         response: JSONObject? ->
                         run {
                             Log.e("Rest Response", response.toString())
-                            strategyEntryList.removeAt(strategyEntryList.indexOf(strategyToDelete))
+                            strategyEntryList.removeAt(strategyEntryList.indexOf(this.strategyToDelete!!))
                             adapter.notifyDataSetChanged()
+                            strategyToDelete = null
                             Toast.makeText(activity, "Strategy deleted!", Toast.LENGTH_SHORT).show()
                         }
                     },
@@ -186,7 +188,7 @@ class CurrentStrategiesFragment : Fragment(), DeleteStrategyOnClickListener {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     headers["Authorization"] = token
-                    headers["Content-Type"] = "application/json"
+                    //headers["Content-Type"] = "application/json"
                     return headers
                 }
             }
